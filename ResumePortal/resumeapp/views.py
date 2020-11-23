@@ -143,11 +143,12 @@ def send_email(request):
         for receiver_email in email_list:
             subject = "Job Application"
             body = " "
-            sender_email = "cury.venus@gmail.com"
+            sender_email = "abc@gmail.com"
             # receiver_email = receiver_email
 
-            password = "MVenus@1959"
-            # input("Type your password and press enter:")
+            # provide sender email pwd
+            password = "********"
+
 
             # Create a multipart message and set headers
             message = MIMEMultipart()
