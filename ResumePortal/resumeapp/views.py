@@ -135,7 +135,7 @@ def send_email(request):
 
         email=request.POST.get('email_list')
         print("email:",email)
-        email="['pradeepa.gp@gmail.com','rajthilakam@gmail.com']"
+        email="['receiver1@gmail.com','receiver2@gmail.com']"
         email_list = email.strip('][').replace("'", "").split(",")
 
         #email = ["pradeepa.gp@gmail.com"]
