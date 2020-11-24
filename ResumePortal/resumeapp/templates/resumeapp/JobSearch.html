@@ -1,0 +1,104 @@
+{% extends 'resumeapp/Base.html' %}
+
+{% block content %}
+<style>
+
+h4 {
+  position: absolute;
+  right: 300px;
+  top: 50px;
+}
+
+h5 {
+  position: absolute;
+  right: 300px;
+  top: 100px;
+}
+
+h3 {
+position: absolute;
+left: 100px;
+top: 50px;
+}
+
+</style>
+
+<body>
+
+<form action="updatepass1" method="post">
+{% csrf_token %}
+     <br>
+     <br>
+     <div><h4 align="right"><i>{{udata}}</i></h4></div>
+     <div id="button2" align="right"><h5><a href="{% url 'resumeapp:Logout' %}">Logout</a></h5></div>
+     <br><br>
+</form>
+
+<form action="{% url 'resumeapp:JobList' %}" method="get">
+     {% csrf_token %}
+     <h2 align="center">Find your Next Opportunity</h2>
+     <br>
+     <br>
+     <br>
+     <br>
+<table align="center">
+    <tr>
+
+        <td>
+
+            <select name="jobcategory" id="jobcategory">
+                    <!--<option value="" selected disabled hidden><b>Job Title</b></option>-->
+                    <option value="Python Developers">Python Developer</option>
+                    <option value="Data Science">Data Science</option>
+                    <option value="SDET">SDET</option>
+                    <option value="Software Quality Assurance Engineer">Software Quality Assurance Engineer</option>
+                    <option value="Java Developer">Java Developer</option>
+
+            </select>
+        </td>
+
+        <td colspan=4 with="80%"><hr></td>
+        <td colspan=4 with="80%"><hr></td>
+        <td colspan=4 with="80%"><hr></td>
+        <td colspan=4 with="80%"><hr></td>
+        <td colspan=4 with="80%"><hr></td>
+        <td>
+
+
+            <select name="joblocation" id="joblocation">
+                <!--<option value="" selected disabled hidden>Job Location</option>-->
+                <option value="Austin, TX">Austin, TX</option>
+                <option value="Atlanta, GA">Atlanta, GA</option>
+                <option value="Baltimore, MD">Baltimore, MD</option>
+                <option value="Boston, MA">Boston, MA</option>
+                <option value="Boulder, CO">Boulder, CO</option>
+                <option value="Charlotte, NC">Charlotte, NC</option>
+                <option value="Colorado Springs, CO">Colorado Springs, CO</option>
+                <option value="Columbus, OH">Columbus, OH</option>
+                <option value="Dallas, TX">Dallas, TX</option>
+                <option value="Denver, CO">Denver, CO</option>
+                <option value="Durham-Chapel Hill, NC">Durham-Chapel Hill, NC</option>
+                <option value="Huntsville, AL">Huntsville, AL</option>
+                <option value="Jacksonville, FL">Jacksonville, FL</option>
+                <option value="Nashville, TN">Nashville, TN</option>
+                <option value="New York, NY">New York, NY</option>
+                <option value="Raleigh, NC">Raleigh, NC</option>
+                <option value="San Diego, CA">San Diego, CA</option>
+                <option value="San Francisco, CA">San Francisco, CA</option>
+                <option value="San Jose, CA">San Jose, CA</option>
+                <option value="Seattle, WA">Seattle, WA</option>
+                <option value="Tampa, FL">Tampa, FL</option>
+                <option value="Washington, DC">Washington, DC</option>
+            </select>
+        </td>
+        <td colspan=4 with="80%"><hr></td>
+        <td colspan=4 with="80%"><hr></td>
+        <td colspan=4 with="80%"><hr></td>
+        <td colspan=4 with="80%"><hr></td>
+        <td colspan=4 with="80%"><hr></td>
+
+        <td><button class="w3-btn w3-blue">Submit</button></td>
+    </tr>
+</table></form>
+{% endblock %}
+</body>

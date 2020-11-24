@@ -1,3 +1,5 @@
+{% load staticfiles %}
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -187,16 +189,50 @@ th, td {
 //span.align-right { text-align:right; }
 //span { width:100%; display:inline-block; }
 //span a { font-size:16px; }
+
+.image {
+font-family: "Times New Roman", Times, serif;
+font-size:25px;
+position: absolute;
+left: 100px;
+top: 50px;
+}
+
+.sessionid {
+  position: absolute;
+  right: 300px;
+  top: 50px;
+}
+
+h5 {
+  position: absolute;
+  right: 300px;
+  top: 100px;
+}
+
 </style>
   </head>
   <body>
-  <p>
-  <span class="align-right"><a href="{% url 'upload-file' %}">  Back To Home</a><br></span>
-  <span class="align-right"><a href="{% url 'job-search' %}">  Back To Job Search</a></span>
-  </p>
+  <br>
+  <br>
+  <p class="image" align="center"><img src="{% static 'images.png' %}" align="center"><b> &nbsp &nbsp NUMPY NINJA</b></p>
+  <br>
+  <br>
+  <br>
   </body>
-    <h2 id="selected_category_location" > Job Search Results for  <span style="color:blue">{{selected_category}}</span>  in  <span style="color:blue">{{selected_location}}</span> </h2>
+
+  <form action="updatepass1" method="post">
+    {% csrf_token %}
+     <br>
+     <br>
+     <div><h4  class="sessionid" align="right"><i>{{udata}}</i></h4></div>
+     <div id="button2" align="right"><h5><a href="{% url 'resumeapp:Logout' %}">Logout</a></h5></div>
+     <br>
+    </form>
+  <h4 id="selected_category_location" > Job Search Results for  <span style="color:blue"><i>{{selected_category}}</i></span>  in  <span style="color:blue"><i>{{selected_location}}</i></span> </h4>
     <br>
+
+
   <form>{% csrf_token %}
   <table>
   <tr>
@@ -215,14 +251,14 @@ th, td {
     <td>{{i.job_location}}</td>
     <td>{{i.company_name}}</td>
     <td>{{i.job_description}}</td>
-    {% if i.job_phone_no|length == 0 %}
+    {% if i.job_phone_no|length == 2 %}
         <td>Not Available </td>
     {% else %}
        <td>{{i.job_phone_no}}</td>
 
 <!--       <td><a onclick='send_whatsapp_msg("{{i.job_phone_no}}")' target="_blank" href="">{{i.job_phone_no}}</a></td>-->
     {% endif %}
-    {% if i.job_email|length == 0 %}
+    {% if i.job_email|length == 2 %}
         <td>Not available</td>
     {% else %}
         <td>{{i.job_email}}</td>
@@ -235,7 +271,7 @@ th, td {
   </form>
 
 <div class="form-popup" id="myForm">
-  <form action="{% url 'send-email' %}" method="post" class="form-container"> {% csrf_token %}
+  <form action="{% url 'resumeapp:send-email' %}" method="post" class="form-container"> {% csrf_token %}
   <label for="email"><b>Send Email to </b></label>
     <input id="email" type="text" placeholder="Send Email to" name="email" style="width:500px" disabled>
     <input type="hidden" id="email_list" name="email_list" >

@@ -2,15 +2,26 @@ from django.conf.urls import url
 from django.contrib import admin
 from .import views
 from django.conf import settings
+from django.urls import path
 from django.conf.urls.static import static
 
+app_name = 'resumeapp'
 
 urlpatterns =[
-    url(r'^$', views.upload_page,name='upload-file'),
-    url(r'^ApplicantDetails', views.applicant_file,name='upload-page2'),
-    url(r'^Thankyou', views.uploaded_to_db,name='upload-page3'),
+    path('', views.upload_page,name='Homepage'),
+    path('ApplicantDetails/', views.applicant_file,name='ApplicantDetails'),
+    path('Update/',views.update_db,name = 'Update'),
+    path('User/',views.user_login,name = 'User_Login'),
+    path('Updatepassword/',views.update_password,name ='Password_Update'),
+    path('Password/',views.reset_password,name='Forgot_Password'),
+    path('Registereduser/',views.registered_user,name = 'Registered_User'),
+    path('password/resetpass/',views.update_reset_password,name='Password_Reset'),
+    path('Logout/', views.logout, name='Logout'),
+    path('JobList/', views.job_list_new, name='JobList'),
+    path('JobSearch', views.job_search, name='job-search'),
+    url(r'^Thankyou', views.update_db,name='upload-page3'),
     url(r'^JobSearch', views.job_search, name='job-search'),
-    url(r'^JobList', views.job_list, name='job-list'),
+
     url(r'^SendEmail', views.send_email, name='send-email'),
 ]
 
