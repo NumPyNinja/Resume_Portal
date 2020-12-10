@@ -324,7 +324,7 @@ def send_email(request):
 
         email=request.POST.get('email_list')
         print("email:",email)
-        email="['pradeepa.gp@gmail.com','rajthilakam@gmail.com']"
+        email="['receiver1@gmail.com','receiver2@gmail.com']"
         email_list = email.strip('][').replace("'", "").split(",")
 
         #email = ["pradeepa.gp@gmail.com"]
@@ -332,11 +332,12 @@ def send_email(request):
         for receiver_email in email_list:
             subject = "Job Application"
             body = " "
-            sender_email = "cury.venus@gmail.com"
+            sender_email = "abc@gmail.com"
             # receiver_email = receiver_email
 
-            password = "MVenus@1959"
-            # input("Type your password and press enter:")
+            # provide sender email pwd
+            password = "********"
+
 
             # Create a multipart message and set headers
             message = MIMEMultipart()
