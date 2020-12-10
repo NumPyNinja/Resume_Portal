@@ -150,6 +150,7 @@ def update_password(request):
     if request.method == 'POST':
         if (request.session.has_key('uid')):
             newpass = request.POST['pass1']
+            print (len(newpass))
             newencrypt = sha256_crypt.encrypt(str(newpass))
             print (newencrypt)
             resume = Resume.objects.filter(id=request.session['uid']).update(loginid=request.POST['email'],
@@ -289,9 +290,11 @@ def job_list(request,catergory=None, location=None):
     #print(df)
 
     # Create new df that shows the jobs with email address and phoneno.s at the beginning
+
     df1 = pandas.DataFrame()
-    df1 = df1.append(df[(df["job_email"].notnull()) | (df["job_phone_no"].notnull())])
-    df1 = df1.append(df[(df["job_email"].isnull()) & (df["job_phone_no"].isnull())])
+    df1 = df1.append(df[(df["job_email"] != '[]') | (df["job_phone_no"] != '[]')])
+    df1 = df1.append(df[(df["job_email"] == '[]') & (df["job_phone_no"] == '[]')])
+
 
     data_dict=df1.to_dict('records')
 
@@ -429,23 +432,19 @@ def job_list_new(request,catergory=None, location=None):
     latest_file = (latest['Key'])
     print(latest_file)
 
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-    dir_location = os.path.join(BASE_DIR, 'Csvfiles')
-    file_location = dir_location +'\file.csv'
-    print("file location", file_location)
 
 
 
 
-    try:
-        s3_client.download_file('numpyninja-jobscrapper','Jobmonster_Nov5.csv', 'C:\\Users\\rajth\\PycharmProjects\\NumpyNinja_JobPortal\\Resume_Portal\\ResumePortal\\Csvfiles\\file.csv')
 
-    except botocore.exceptions.ClientError as e:
-        if e.response['Error']['Code'] == "404":
-            print("The object does not exist.")
-        else:
-            raise
+    #try:
+        #s3_client.download_file('numpyninja-jobscrapper','Jobmonster_Nov5.csv', 'C:\\Users\\rajth\\PycharmProjects\\NumpyNinja_JobPortal\\Resume_Portal\\ResumePortal\\Csvfiles\\file.csv')
+
+    #except botocore.exceptions.ClientError as e:
+        #if e.response['Error']['Code'] == "404":
+            #print("The object does not exist.")
+        #else:
+            #raise
 
     #list_of_files = glob.glob(file_location)
     #latest_file = max(list_of_files, key=os.path.getctime)
@@ -477,16 +476,18 @@ def job_list_new(request,catergory=None, location=None):
 
     #change the column names to lowercase and replace spaces with underscore
     df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_').str.replace('(', '').str.replace(')', '')
-    #print(df)
+    print(df)
 
     # Create new df that shows the jobs with email address and phoneno.s at the beginning
     df1 = pandas.DataFrame()
     df1 = df1.append(df[(df["job_email"] != '[]') | (df["job_phone_no"] != '[]')])
     df1 = df1.append(df[(df["job_email"] == '[]') & (df["job_phone_no"] == '[]')])
 
-    data_dict=df1.to_dict('records')
+    #data_dict=df1.to_dict('records')
 
-    #print (data_dict)
+    data_dict = df_aws.to_dict('records')
+
+    print (data_dict)
 
     context = {
         'dict' : data_dict,

@@ -78,13 +78,14 @@ TEMPLATES = [
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-
+"""
 DATABASES = {
      'default': {
          'ENGINE': 'django.db.backends.sqlite3',
          'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
      }
     }
+"""
 
 """DATABASES = {
 'default': {
@@ -97,6 +98,21 @@ DATABASES = {
     }
 
     }"""
+
+
+DATABASES = {
+'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'dbo53q05khphsq',
+        'USER': 'tjwamztwfeudyf',
+        'PASSWORD': '4016af97c725336d823c79afd14e790341ff2b3b6849ea1ed1f3260b2f4fb46b',
+        'HOST': 'ec2-50-17-90-177.compute-1.amazonaws.com',
+        'PORT': '5432',
+    }
+
+    }
+
+
 
 
 """DATABASES = {

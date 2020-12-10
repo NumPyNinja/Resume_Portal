@@ -27,3 +27,21 @@ class Jobs(models.Model):
 
     def __str__(self):
         return  str(self.job_title) + " " + str(self.job_location)
+
+class Job_Details(models.Model):
+    job_category = models.CharField(max_length=50, null=True)
+    date_time_scrapped = models.CharField(max_length=50,null=True)
+    searched_job_title = models.CharField(max_length=100, null=True)
+    searched_job_location = models.CharField(max_length=100, null=True)
+    job_portal = models.CharField(max_length=50, null=True)
+    job_date_posted=  models.CharField(max_length=100,null=True)
+    job_title = models.CharField(max_length=400, null=True)
+    job_company_name = models.CharField(max_length=400, null=True)
+    job_location = models.CharField(max_length=400, null=True)
+    job_phone_no = models.CharField(max_length=100, null=True)
+    job_email = models.CharField(max_length=200, null=True)
+    job_link = models.CharField(max_length=2000, null=True)
+    job_description = models.TextField(null=True)
+
+    def __str__(self):
+        return self.job_category+self.date_time_scrapped+self.searched_job_title+self.searched_job_location+self.job_portal+self.job_title+self.company_name+self.job_location+self.job_phone_no+self.job_email+self.job_link+self.job_description
