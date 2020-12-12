@@ -239,8 +239,8 @@ def job_list(request,catergory=None, location=None):
 
     s3_client = boto3.client('s3',
         region_name='us-east-2',
-        aws_access_key_id='AKIA3MXFWFP7UTGONDPF',
-        aws_secret_access_key='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')
+        aws_access_key_id= os.environ.get('AWS_ACCESS_KEY_ID'),
+        aws_secret_access_key= os.environ.get('AWS_SECRET_ACCESS_KEY'))
     list_files = []
     theobjects = s3_client.list_objects_v2(Bucket='numpyninja-jobscrapper')
     print(theobjects)
