@@ -226,6 +226,7 @@ h5 {
      <br>
      <br>
      <div><h4  class="sessionid" align="right"><i>{{udata}}</i></h4></div>
+      <div><h4>{{udata}}</h4></div>
      <div id="button2" align="right"><h5><a href="{% url 'resumeapp:Logout' %}">Logout</a></h5></div>
      <br>
     </form>
@@ -249,7 +250,7 @@ h5 {
  <tr>
     <td>{{i.job_title}}</td>
     <td>{{i.job_location}}</td>
-    <td>{{i.company_name}}</td>
+    <td>{{i.job_company_name}}</td>
     <td>{{i.job_description}}</td>
     {% if i.job_phone_no|length == 2 %}
         <td>Not Available </td>

@@ -17,7 +17,7 @@ import docx
 import os
 from docx import Document
 import json
-from .models import Resume
+from .models import Resume,Job_Details
 
 import email, smtplib, ssl
 from email import encoders
@@ -28,6 +28,7 @@ from django.contrib import messages
 import boto3
 import botocore
 from datetime import datetime
+from collections import defaultdict
 
 
 # Open upload page
@@ -407,8 +408,8 @@ def job_list_new(request,catergory=None, location=None):
 
     s3_client = boto3.client('s3',
         region_name='us-east-2',
-        aws_access_key_id='AKIA3MXFWFP7UTGONDPF',
-        aws_secret_access_key='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')
+        aws_access_key_id=os.environ.get('AWS_ACCESS_KEY_ID'),
+        aws_secret_access_key= os.environ.get('AWS_SECRET_ACCESS_KEY'))
     list_files = []
     theobjects = s3_client.list_objects_v2(Bucket='numpyninja-jobscrapper')
     print(theobjects)
@@ -501,3 +502,42 @@ def job_list_new(request,catergory=None, location=None):
     print(end - start)
 
     return render(request,'resumeapp/Job_Search_Results.html',context)
+
+def job_list_db(request):
+    print("in job list")
+    print(request.session['eid'])
+
+    start = datetime.now()
+    print(start)
+
+    job_category = request.GET.get('jobcategory')
+    job_loc = request.GET.get('joblocation')
+    job_search = Job_Details.objects.filter(searched_job_title=job_category, searched_job_location=job_loc)
+
+    'Converting Queryset to list'
+    list_job = [entry for entry in job_search.values()]
+    print (list_job)
+
+    print (sorted(list_job, key=lambda i: i['age']))
+
+    'Converting List to Dictionary'
+    res = defaultdict(list)
+    for sub in list_job:
+        for key in sub:
+            res[key].append(sub[key])
+
+    job_list_dict = dict(res)
+
+    print (type(job_list_dict))
+
+    context = {
+        'dict': list_job,
+        'selected_category': job_category,
+        'selected_location': job_loc
+    }
+
+    end = datetime.now()
+    print(end)
+    print(end - start)
+
+    return render(request, 'resumeapp/Job_Search_Results.html', context)
