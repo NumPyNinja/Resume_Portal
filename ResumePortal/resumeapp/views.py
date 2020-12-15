@@ -150,14 +150,26 @@ def user_login(request):
 def update_password(request):
     if request.method == 'POST':
         if (request.session.has_key('uid')):
-            newpass = request.POST['pass1']
-            print (len(newpass))
-            newencrypt = sha256_crypt.encrypt(str(newpass))
-            print (newencrypt)
-            resume = Resume.objects.filter(id=request.session['uid']).update(loginid=request.POST['email'],
-                                    password=newencrypt)
-            request.session['eid'] = request.POST['email']
-            return render(request,'resumeapp/JobSearch.html',{'udata':request.session['eid']})
+
+            email_check = request.POST['email']
+            login_exist = Resume.objects.filter(loginid=email_check)
+
+            if not login_exist:
+
+                newpass = request.POST['pass1']
+                print (len(newpass))
+                newencrypt = sha256_crypt.encrypt(str(newpass))
+                print (newencrypt)
+                resume = Resume.objects.filter(id=request.session['uid']).update(loginid=request.POST['email'],
+                                        password=newencrypt)
+                request.session['eid'] = request.POST['email']
+                return render(request,'resumeapp/JobSearch.html',{'udata':request.session['eid']})
+
+            else:
+
+                messages.error(request, "Email is already registered", extra_tags='Register')
+                return HttpResponseRedirect(reverse('resumeapp:User_Login'))
+
     else:
         return render(request,'resumeapp/Homepage.html')
 
@@ -518,7 +530,7 @@ def job_list_db(request):
     list_job = [entry for entry in job_search.values()]
     print (list_job)
 
-    print (sorted(list_job, key=lambda i: i['age']))
+    print (sorted(list_job, key=lambda i: i['job_email']))
 
     'Converting List to Dictionary'
     res = defaultdict(list)
@@ -533,7 +545,8 @@ def job_list_db(request):
     context = {
         'dict': list_job,
         'selected_category': job_category,
-        'selected_location': job_loc
+        'selected_location': job_loc,
+        'udata':request.session['eid']
     }
 
     end = datetime.now()

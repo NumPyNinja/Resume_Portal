@@ -1,6 +1,7 @@
 {% extends 'resumeapp/Base.html' %}
 
 {% block content %}
+<head>
 <style>
 body {font-family: Arial, Helvetica, sans-serif;}
 * {box-sizing: border-box;}
@@ -75,6 +76,23 @@ top: 50px;
 		<form action="{% url 'resumeapp:Password_Update' %}" class="form-container" method="post" enctype="multipart/form-data">
 			{% csrf_token %}
             <h2 align="center">Register</h2>
+
+				<div class="w3-container">
+
+                {% for message in messages %}
+                    {% if "Register" in message.extra_tags %}
+
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>{{ message }}</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+
+                    {% endif %}
+                {% endfor %}
+
+            	</div>
 
 				<div data-validate = "valid email is abc@.d">
 				<label for="email" align="left"><b>Email</b></label><br>
