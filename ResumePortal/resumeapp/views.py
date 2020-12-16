@@ -96,7 +96,7 @@ def applicant_file(request):
                         phone_number=resume_dict.get("mobile_number"),
                         #loginid=resume_dict.get("email"),
                         email_address=resume_dict.get("email"),
-                        password=resume_dict.get("mobile_number"),
+                        #password=resume_dict.get("mobile_number"),
                         work_experience=resume_dict.get("Work Experience"),
                         technical_skillset=resume_dict.get("skills"),
                         education = resume_dict.get("degree"))
@@ -116,9 +116,9 @@ def update_db(request):
                        last_name = request.POST['lName'],
                        phone_number = request.POST['cDetail'],
                        education = request.POST['edu'],
-                       loginid = request.POST['email'],
+                       #loginid = request.POST['email'],
                        email_address = request.POST['email'],
-                       password = request.POST['cDetail'],
+                       #password = request.POST['cDetail'],
                        work_experience = request.POST['exp'],
                        employment_authorization = request.POST['vStatus'],
                        technical_skillset = request.POST['skills']
@@ -524,13 +524,24 @@ def job_list_db(request):
 
     job_category = request.GET.get('jobcategory')
     job_loc = request.GET.get('joblocation')
-    job_search = Job_Details.objects.filter(searched_job_title=job_category, searched_job_location=job_loc)
+
+    new_job_category = job_category.split()
+    keyword = "Python"
+
+
+    if keyword in new_job_category:
+
+        job_search = Job_Details.objects.filter(searched_job_title__startswith = keyword, searched_job_location=job_loc)
+
+    else:
+        job_search = Job_Details.objects.filter(searched_job_title=job_category, searched_job_location=job_loc)
 
     'Converting Queryset to list'
     list_job = [entry for entry in job_search.values()]
     print (list_job)
 
-    print (sorted(list_job, key=lambda i: i['job_email']))
+    sorted_dict =  (sorted(list_job, key=lambda i: (i['job_email'],i['job_phone_no'])))
+
 
     'Converting List to Dictionary'
     res = defaultdict(list)

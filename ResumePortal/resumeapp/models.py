@@ -15,7 +15,7 @@ class Resume(models.Model):
     work_experience = models.CharField(max_length=20,null=True)
     employment_authorization = models.CharField(max_length=10,null=True)
     loginid = models.EmailField(unique=True,null=True)
-    password = models.CharField(max_length=50)
+    password = models.CharField(max_length=50,null=True)
     registration = models.CharField(max_length=3,default='No')
 
     def __str__(self):
