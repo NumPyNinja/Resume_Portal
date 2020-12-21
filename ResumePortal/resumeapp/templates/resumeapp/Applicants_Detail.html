@@ -62,13 +62,7 @@ top: 50px;
 	<p align="center" style="font-size:25px"><i>Please Review Details Before Submitting</i></p></br>
 <input type='hidden' name="id" value="{{ resume.id }}" /> {% csrf_token %}
 	<table   width="50%" class="center">
-		<tr bgcolor="white">
-			<td><b><i>Application Id :<i><font color="red">*</font></b></td>
-			<td><b>{{ resume.id }}</b></td>
-		</tr>
-		<tr>
-		<td></td>
-		</tr>
+
 
 
 		<tr>
@@ -76,7 +70,7 @@ top: 50px;
 		</tr>
 		<tr bgcolor="white">
 			<td><b><i>First Name:</i><font color="red">*</font></b></td>
-			<td><input type="text" id="fName" name="fName" value="{{ resume.first_name }}" required/><div id="fname_error" style="color :red; font-size: 14px;"></div></td>
+			<td><input type="text" id="fName"  maxlength="50" name="fName" value="{{ resume.name }}" required/><div id="fname_error" style="color :red; font-size: 14px;"></div></td>
 		</tr>
 
 		<tr>
@@ -84,19 +78,19 @@ top: 50px;
 		</tr>
 
 		<tr>
-			<td><b><i>Last Name:</i><font color="red">*</font></b></td><td><input type="text" id="lName" name="lName" value="{{ resume.last_name }}" required /><div id="lname_error" style="color :red; font-size: 14px;"></div></td>
+			<td><b><i>Last Name:</i><font color="red">*</font></b></td><td><input type="text" id="lName" name="lName" value="{{ resume.name }}" maxlength="50" required /><div id="lname_error" style="color :red; font-size: 14px;"></div></td>
 		</tr>
 
 		<tr><td></td></tr>
 
 		<tr bgcolor="white">
-			<td><b><i>Contact Details:</i><font color="red">*</font></b></td><td><input type="text" name="cDetail" id="cDetail" value="{{ resume.phone_number }}" required/></td>
+			<td><b><i>Contact Details:</i><font color="red">*</font></b></td><td><input type="text" name="cDetail" id="cDetail" maxlength="12" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" title="xxx-xxx-xxxx" value="{{ resume.mobile_number }}" required/></td>
 		</tr>
 
 		<tr><td></td></tr>
 
 		<tr>
-			<td><b><i>Email ID:</i><font color="red">*</font></b></td><td><input type="text" name="email" id="email" value="{{ resume.email_address }}" required /><div id="email_error" style="color :red; font-size: 14px;"></div></td>
+			<td><b><i>Email ID:</i><font color="red">*</font></b></td><td><input type="text" name="email" id="email"maxlength="50" value="{{ resume.email }}" required /><div id="email_error" style="color :red; font-size: 14px;"></div></td>
 		</tr>
 
 		<tr><td></td></tr>
@@ -104,13 +98,13 @@ top: 50px;
 
 
 		<tr >
-			<td><b><i>Education:</i></b></td><td><input type="text" name="edu" id="edu" value="{{ resume.education }}" /></td>
+			<td><b><i>Education:</i></b></td><td><input type="text" name="edu" id="edu" maxlength="50" value="{{ resume.degree }}" /></td>
 		</tr>
 
 		<tr><td></td></tr>
 
 		<tr >
-			<td><b><i>Work Experience:</i></b></td><td><input type="text" name="exp" id="exp" value="{{ resume.workexperience }}" /></td>
+			<td><b><i>Work Experience:</i></b></td><td><input type="text" name="exp"size="20" id="exp" value="{{ resume.total_experience }}" /></td>
 		</tr>
 
 		<tr><td></td></tr>
@@ -136,7 +130,7 @@ top: 50px;
 
 
 		<tr>
-			<td><b><i>Technologies:</i></b></td><td> <input type="text"  name="skills" id="skills" value="{{ resume.technical_skillset }}" style="height:100px"/></td>
+			<td><b><i>Technologies:</i></b></td><td> <input type="text" maxlength="400" name="skills" id="skills" value="{{ resume.skills }}" style="height:100px"/></td>
 		</tr>
 
 	</table>

@@ -90,19 +90,8 @@ def applicant_file(request):
                     json.dump(loaded_json, fp)
          """
 
-        resume = Resume()
-        resume = Resume(first_name=resume_dict.get("name"),
-                        last_name=resume_dict.get("name"),
-                        phone_number=resume_dict.get("mobile_number"),
-                        #loginid=resume_dict.get("email"),
-                        email_address=resume_dict.get("email"),
-                        #password=resume_dict.get("mobile_number"),
-                        work_experience=resume_dict.get("Work Experience"),
-                        technical_skillset=resume_dict.get("skills"),
-                        education = resume_dict.get("degree"))
-        resume.save()
 
-        context = {'resume': resume}
+        context = {'resume': resume_dict}
 
         return render(request, 'resumeapp/Applicants_Detail.html', context)
 
@@ -111,14 +100,12 @@ def applicant_file(request):
 def update_db(request):
     if request.method == 'POST':
 
-          update_resume = Resume(id = request.POST['id'],
+          update_resume = Resume(
                        first_name = request.POST['fName'],
                        last_name = request.POST['lName'],
                        phone_number = request.POST['cDetail'],
                        education = request.POST['edu'],
-                       #loginid = request.POST['email'],
                        email_address = request.POST['email'],
-                       #password = request.POST['cDetail'],
                        work_experience = request.POST['exp'],
                        employment_authorization = request.POST['vStatus'],
                        technical_skillset = request.POST['skills']
@@ -126,7 +113,10 @@ def update_db(request):
 
           update_resume.save()
 
-          request.session['uid'] = request.POST['id']
+          session_id = (update_resume.pk)
+          print(session_id)
+
+          request.session['uid'] = session_id
           print (request.session.session_key)
           print (request.session['uid'])
           request.session.modified = 'True'
@@ -554,7 +544,7 @@ def job_list_db(request):
     print (type(job_list_dict))
 
     context = {
-        'dict': list_job,
+        'dict': sorted_dict,
         'selected_category': job_category,
         'selected_location': job_loc,
         'udata':request.session['eid']
