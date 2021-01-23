@@ -30,10 +30,20 @@ import botocore
 from datetime import datetime
 from collections import defaultdict
 
+#-----------------------Email--------------------------------
 
+from django.core.mail import send_mail, EmailMessage
+from django.utils.encoding import force_bytes
+import six  # email
+from passlib.hash import sha256_crypt
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+
+#-----------------------Email--------------------------------
 # Open upload page
 def upload_page(request):
-    print ("First Page")
+    print("First Page")
     print(request)
     request.session.set_test_cookie()
     print(request.session.get_expiry_date())
@@ -43,10 +53,13 @@ def upload_page(request):
     if request.session.has_key('eid'):
         print(request.session['eid'])
         print(request.session.keys())
-        return render(request, 'resumeapp/JobSearch.html', {'udata': request.session['eid']})
+        return render(request, 'resumeapp/Job_Search_Results.html', {'udata': request.session['eid']})
     return render(request, 'resumeapp/Homepage.html')
 
-
+#Open  the my account page
+def my_account(request):
+    print ("my account page ")
+    return render(request, 'resumeapp/my_account.html')
 
 #Open job search page
 def job_search(request):
@@ -110,15 +123,15 @@ def applicant_file(request):
 #Getparsed Details from second page and store in DB
 def update_db(request):
     if request.method == 'POST':
-
+          password_temp = sha256_crypt.encrypt(request.POST['cDetail'])
           update_resume = Resume(id = request.POST['id'],
                        first_name = request.POST['fName'],
                        last_name = request.POST['lName'],
                        phone_number = request.POST['cDetail'],
                        education = request.POST['edu'],
-                       #loginid = request.POST['email'],
+                       loginid = request.POST['email'],
                        email_address = request.POST['email'],
-                       #password = request.POST['cDetail'],
+                       password = password_temp ,
                        work_experience = request.POST['exp'],
                        employment_authorization = request.POST['vStatus'],
                        technical_skillset = request.POST['skills']
@@ -126,26 +139,42 @@ def update_db(request):
 
           update_resume.save()
 
-          request.session['uid'] = request.POST['id']
-          print (request.session.session_key)
-          print (request.session['uid'])
-          request.session.modified = 'True'
+          # -----------------------Email--------------------------------
+          token = gen_token(update_resume)
+          current_site = get_current_site(request)
+          message = render_to_string('resumeapp/mail_body.txt', {
+              'user': update_resume.first_name,
+              'domain': current_site.domain,
+              'uid': urlsafe_base64_encode(force_bytes(update_resume.id)),
+              'token': urlsafe_base64_encode(force_bytes(token)),
+          })
+          email = EmailMessage('Please verify account', message, to=[update_resume.email_address])
+          email.send()
+
+          # request.session['uid'] = request.POST['id']
+          # print (request.session.session_key)
+          # print (request.session['uid'])
+          # request.session.modified = 'True'
+          # -----------------------Email--------------------------------
+
+
           return render(request,'resumeapp/ThankYou.html')
     return render(request, 'resumeapp/Applicants_Detail.html')
 
 
 def user_login(request):
-    print (request.session['uid'])
+    print(request.session['uid'])
     if request.method == 'POST':
         print (request.session)
+
         if (request.session.has_key('uid')):
             resume = models.Resume.objects.get(id=request.session['uid'])
             print (resume.email_address)
             context = {'object': resume}
             resume.registration = 'Yes'
             resume.save()
-            return render(request,'resumeapp/Login.html',context)
-    return render(request,'resumeapp/Login.html')
+            return render(request,'resumeapp/my_account.html',context)
+    return render(request,'resumeapp/my_account.html')
 
 def update_password(request):
     if request.method == 'POST':
@@ -180,7 +209,7 @@ def registered_user(request):
         print (pass1)
         print (request.session.session_key)
 
-        email_exist = Resume.objects.filter(loginid = user_email,registration = 'Yes')
+        email_exist = Resume.objects.filter(loginid = user_email,email_active_field = True)
 
         if email_exist:
 
@@ -195,15 +224,15 @@ def registered_user(request):
             if email_exist and password_check:
                 request.session['eid'] = user_email
                 print (request.session['eid'])
-                return render(request,'resumeapp/JobSearch.html',{'udata': request.session['eid']})
+                return render(request,'resumeapp/Job_Search_Results.html',{'udata': request.session['eid']})
             else:
                 messages.error(request,"Please Use valid Credentials..Incorrect Password",extra_tags='login')
-                return HttpResponseRedirect(reverse('resumeapp:Homepage'))
+                return HttpResponseRedirect(reverse('resumeapp:my_account'))
         else:
             messages.info(request,"Please use registered Email to login",extra_tags='register')
-            return HttpResponseRedirect(reverse('resumeapp:Homepage'))
+            return HttpResponseRedirect(reverse('resumeapp:my_account'))
 
-    return HttpResponseRedirect(reverse('resumeapp:Homepage'))
+    return HttpResponseRedirect(reverse('resumeapp:my_account'))
 
 def reset_password(request):
     return render(request,'resumeapp/ResetPassword.html')
@@ -515,53 +544,90 @@ def job_list_new(request,catergory=None, location=None):
 
     return render(request,'resumeapp/Job_Search_Results.html',context)
 
+
+
 def job_list_db(request):
-    print("in job list")
-    print(request.session['eid'])
 
-    start = datetime.now()
-    print(start)
+    if request.method == 'POST':
+        job_category = request.POST['sjobcategory']
+        job_loc = request.POST['sjoblocation']
+        new_job_category = job_category.split()
+        keyword = "Python"
 
-    job_category = request.GET.get('jobcategory')
-    job_loc = request.GET.get('joblocation')
+        if keyword in new_job_category:
+            job_search = Job_Details.objects.filter(searched_job_title__startswith = keyword, searched_job_location=job_loc)
+        else:
+            job_search = Job_Details.objects.filter(searched_job_title=job_category, searched_job_location=job_loc)
 
-    new_job_category = job_category.split()
-    keyword = "Python"
-
-
-    if keyword in new_job_category:
-
-        job_search = Job_Details.objects.filter(searched_job_title__startswith = keyword, searched_job_location=job_loc)
-
+        list_job = [entry for entry in job_search.values()]
+        res = defaultdict(list)
+        for sub in list_job:
+            for key in sub:
+                res[key].append(sub[key])
+        job_list_dict = dict(res)
+        postbacks = "Yes"
     else:
-        job_search = Job_Details.objects.filter(searched_job_title=job_category, searched_job_location=job_loc)
-
+        list_job = list()
+        job_category = ""
+        job_loc = ""
+        postbacks = "Not"
     'Converting Queryset to list'
-    list_job = [entry for entry in job_search.values()]
-    print (list_job)
 
-    sorted_dict =  (sorted(list_job, key=lambda i: (i['job_email'],i['job_phone_no'])))
-
-
+        # sorted_dict =  (sorted(list_job, key=lambda i: (i['job_email'],i['job_phone_no'])))
     'Converting List to Dictionary'
-    res = defaultdict(list)
-    for sub in list_job:
-        for key in sub:
-            res[key].append(sub[key])
 
-    job_list_dict = dict(res)
-
-    print (type(job_list_dict))
+    # print (type(job_list_dict))
 
     context = {
         'dict': list_job,
         'selected_category': job_category,
         'selected_location': job_loc,
+        'postbacks':postbacks,
         'udata':request.session['eid']
     }
 
-    end = datetime.now()
-    print(end)
-    print(end - start)
-
     return render(request, 'resumeapp/Job_Search_Results.html', context)
+
+#-----------------------Email--------------------------------
+
+def check_token(user, token):
+
+    generatedtokenstr = gen_token_str(user)
+
+    resultcomp = sha256_crypt.verify( generatedtokenstr ,  token )
+    return  resultcomp
+
+def gen_token_str(update_resume):
+
+    strtoen = six.text_type(update_resume.pk) + six.text_type(update_resume.email_address) + six.text_type(
+        update_resume.email_active_field)
+    return strtoen
+
+def gen_token(update_resume):
+
+    strtoen = six.text_type(update_resume.pk) + six.text_type(update_resume.email_address) + six.text_type(
+        update_resume.email_active_field)
+
+    str1 = sha256_crypt.encrypt( strtoen )
+    # str11 = urlsafe_base64_encode(str1)
+    return str1
+
+
+def activate(request, uidb64, token):
+    try:
+        token_no64 = urlsafe_base64_decode(token).decode()
+        uid =  urlsafe_base64_decode(uidb64).decode()
+        user = models.Resume.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, user.DoesNotExist):
+        user = None
+    if user is not None and check_token(user, token_no64):
+        user. email_active_field = True
+        user.save()
+        messages.error(request, "Thank you for your email confirmation. Now you can login to your account", extra_tags='login')
+        return HttpResponseRedirect(reverse('resumeapp:my_account'))
+    else:
+       messages.error(request, "Activation link is invalid!", extra_tags='login')
+       return HttpResponseRedirect(reverse('resumeapp:my_account'))
+
+
+#-----------------------Email--------------------------------

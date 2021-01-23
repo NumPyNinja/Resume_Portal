@@ -28,7 +28,16 @@ DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1','localhost']
 #ALLOWED_HOSTS = []
 
-
+#-----------------------Email--------------------------------
+EMAIL_USE_TLS = True #email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = '' #ex anshumalikanshu@gmail.com
+EMAIL_HOST_PASSWORD = ''
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+MAILER_EMAIL_BACKEND = EMAIL_BACKEND
+#-----------------------Email--------------------------------
 # Application definition
 
 INSTALLED_APPS = [
@@ -78,14 +87,14 @@ TEMPLATES = [
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-"""
+
 DATABASES = {
      'default': {
          'ENGINE': 'django.db.backends.sqlite3',
          'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
      }
     }
-"""
+
 
 """DATABASES = {
 'default': {
@@ -169,7 +178,10 @@ SESSION_COOKIE_AGE = 31536000
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = ["C:\\Users\\prade\\PycharmProjects\\ResumePortal\\resumeapp\\templates\\resumeapp",]
+#STATICFILES_DIRS = ["C:\\Users\\prade\\PycharmProjects\\ResumePortal\\resumeapp\\templates\\resumeapp",]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')

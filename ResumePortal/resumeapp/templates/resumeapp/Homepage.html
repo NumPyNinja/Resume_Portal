@@ -1,238 +1,76 @@
-{% extends 'resumeapp/Base.html' %}
+﻿{% extends 'resumeapp/Base.html' %}
 {% load staticfiles %}
+{% load static%}
 {% block content %}
+<header class="transparent sticky-header">
+<div class="container">
+	<div class="sixteen columns">
+	
+		<!-- Logo -->
+		<div id="logo">
+			<h1><a href="index.html"><img src="{% static 'resumeapp/images/logo.png' %}" alt="Work Scout" /></a></h1>
+		</div>
 
-<style>
-body {font-family: Arial, Helvetica, sans-serif;}
-* {box-sizing: border-box;}
+		<!-- Menu -->
+		<nav id="navigation" class="menu">
+			
 
-/* Button used to open the contact form - fixed at the bottom of the page */
-.open-button {
-  background-color: #800080;
-  color: white;
-  padding: 16px 10px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  top: 113px;
-  right: 128px;
-  width: 180px;
-}
-/* Link used to open the contact form - fixed at the bottom of the page */
-.open-link {
-  background-color: #000000;
-  color: white;
 
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  top: 103px;
-  right: 200px;
+			<ul class="float-right">
+				<li><a href= "{% url 'resumeapp:my_account' %}" ><i class="fa fa-lock"></i> Log In</a></li>
+			</ul>
 
-}
-/* The popup form - hidden by default */
-.form-popup {
-  display: none;
-  position: fixed;
-  top: 0;
-  right: 15px;
-  border: 3px solid #f1f1f1;
-  z-index: 9;
-}
+		</nav>
 
-/* Add styles to the form container */
-.form-container {
-  max-width: 300px;
-  padding: 40px;
-  background-color: white;
-}
+		<!-- Navigation -->
+		
 
-/* Full-width input fields */
-.form-container input[type=email], .form-container input[type=password] {
-  width: 100%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  border: none;
-  background: #f1f1f1;
-}
-
-/* When the inputs get focus, do something */
-.form-container input[type=email]:focus, .form-container input[type=password]:focus {
-  background-color: #ddd;
-  outline: none;
-}
-
-/* Set a style for the submit/login button */
-.form-container .btn {
-  background-color: #800080;
-  color: white;
-  padding: 16px 20px;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  margin-bottom:10px;
-  opacity: 0.8;
-}
-
-/* Add a red background color to the cancel button */
-.form-container .cancel {
-  background-color: blue;
-}
-
-/* Add some hover effects to buttons */
-.form-container .btn:hover, .open-button:hover {
-  opacity: 1;
-}
-
-.login100-form-btn {
-    font-family: Poppins-Medium;
-    font-size: 15px;
-    color: #fff;
-    line-height: 1.2;
-    text-transform: uppercase;
-    /* display: -webkit-box; */
-    /* display: -webkit-flex; */
-    display: -moz-box;
-    display: -ms-flexbox;
-    /* display: flex; */
-    /* justify-content: center; */
-    /* align-items: center; */
-    padding: 0 20px;
-    width: 100%;
-    height: 50px;
-}
-
-</style>
-
-<body>
-
-    <p align="center" style="font-size:35px">
-        <i>Welcome to Job Portal </i>
-    </p>
-
-<br>
-
-<form action="{% url 'resumeapp:ApplicantDetails' %}" method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-
-        <div class="w3-container" align="center">
-
-            <h2><i>Save Time</i></h2><br>
-            <h2><i>Apply Multiple Portals</i></h2><br>
-            <h6><i>Connect directly to the recruiter's, phone and email </i></h6><br><br>
-
-            <i><input type="file" class="w3-btn w3-blue" value="Upload Resume" name="filename" id="filename"  required></i>
-            <br><br>
-            <i><button class="w3-btn w3-blue" onclick="return Checkfiles()">Submit</button></i>
-            <i><input  type = "reset" class="w3-btn w3-blue" name = "action" value = "Cancel" ></i>
-
-        </div>
-        <br/>
-
-</form>
-<br>
-<p align="center"><i>File size should not exceed 5MB and should be docx file</i></p>
-<br>
-<p align="center">
-<picture>
-    <img src="{% static 'indeed.png' %}" width="200" height="50">
-    <img src="{% static 'monster.png'  %}">
-    <img src="{% static 'glassdoor.png'  %}">
-
-</picture>
-</p>
-<br>
-<br>
-<button align = "center" class="open-button" onclick="openForm()">Sign in</button>
-
-	<div class="form-popup" id="myForm">
-
-		<form action="{% url 'resumeapp:Registered_User' %}" class="form-container" method="post" enctype="multipart/form-data">
-		    {% csrf_token %}
-
-            <div class="w3-container">
-
-                {% for message in messages %}
-                    {% if "register" in message.extra_tags %}
-                    <div class="alert alert-info alert-dismissible fade show" role="alert">
-                        <strong >{{ message }}</strong>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    </div>
-                    {% endif %}
-                {% endfor %}
-
-            </div>
-
-            <div class="w3-container">
-
-                {% for message in messages %}
-                    {% if "login" in message.extra_tags %}
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>{{ message }}</strong>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    </div>
-                    {% endif %}
-                {% endfor %}
-
-            </div>
-            <br>
-            <input type="text" name="jobdetails" value="{{ jobdetails }}" hidden/>
-
-            <label for="loginid" align="left"><b>Login</b></label>
-            <input type="email" placeholder="Email" name="login" value="" ><br>
-
-            <label for="password" align="left"><b>Password</b></label>
-            <input type="password" placeholder="Password" name="password" required value="">
-
-            <button type="submit" class="btn" name = "action">Login</button><br>&nbsp;
-
-            <a href="{% url 'resumeapp:Forgot_Password' %}"><p align="center">Forget Password</p></a>
-		</form>
 	</div>
-<script type="text/javascript">
-    function Checkfiles()
-   {
+</div>
+</header>
+<div class="clearfix"></div>
 
-        var fup = document.getElementById('filename');
-        var fileName = fup.value;
-        var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
-        var oFile = document.getElementById("filename").files[0];
-        if(ext=="docx" || ext=="DOCX"){
 
-        if(oFile.size > 1 && oFile.size<= 5242880)
-        {
-         console.log ("File uploaded successfully")
+<!-- Banner
+================================================== -->
+<div id="banner" class="with-transparent-header parallax background bgimg"
+	 data-img-width="2000" data-img-height="1330" data-diff="300">
+	
+	<div class="container">
+		<div class="sixteen columns">
 
-        return true;
-        }
-        else
-        {
-        alert("File size must be less than 5Mb!");
-        return false;
-        }
-    }
-    else
-    {
-        alert("Upload Docx files only");
-        return false;
+			<form action="{% url 'resumeapp:ApplicantDetails' %}" method="post" enctype="multipart/form-data" id="myForm">
+				 {% csrf_token %}
+				<!-- Upload CV -->
+				<div class="search-container">
+					<h2>Find job with us</h2>
+					<div class="upload-info"><strong>Upload your CV (optional)</strong> <span>Max. file size: 5MB</span></div>
+					<div class="clearfix"></div>
 
-    }
-}
-</script>
-<script>
-function openForm() {
-  document.getElementById("myForm").style.display = "block";
-}
+					<label class="upload-btn">
+						<input type="file" multiple="" name="filename" id="filename" required>
+						<i class="fa fa-upload"></i> Browse
+					</label>
+					<span class="fake-input" id="UpFileName">No file selected</span>
 
-function closeForm() {
-  document.getElementById("myForm").style.display = "none";
-}
-</script>
+					<button type="submit" style="margin-bottom: 10px" onclick="return Checkfiles()">Submit</button>
+					<button type="reset" style="margin-bottom: 10px">Cancel</button>
+
+					<div class="announce">
+						We’ve over <strong>15 000</strong> job offers for you!
+					</div>
+				</div>
+			</form>
+
+		</div>
+	</div>
+</div>
+
+
+<!-- Content
+================================================== -->
+
+
+<!-- Footer
+================================================== -->
 {% endblock %}
-</body>

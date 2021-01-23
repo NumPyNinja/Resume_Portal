@@ -1,41 +1,140 @@
-{% load staticfiles %}
+{% load static%}
+{% load staticfiles%}
 <!DOCTYPE html>
-<html lang="en">
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<!-- Basic Page Needs
+================================================== -->
+<meta charset="utf-8">
+<title>Work Scout</title>
 
+<!-- Mobile Specific Metas
+================================================== -->
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
-<title>NumpyNinja JobPortal</title>
+<!-- CSS
+================================================== -->
+<link rel="stylesheet" href="{% static 'resumeapp/css/style.css' %}">
+<link rel="stylesheet" href="{% static 'resumeapp/css/colors.css' %} ">
 
 <style>
-h3 {
-font-family: "Times New Roman", Times, serif;
-font-size:25px;
-position: absolute;
-left: 100px;
-top: 50px;
+.bgimg{
+
+    background-image: url( "{% static 'resumeapp/images/banner-home-02.jpg' %}");
 }
 </style>
+
 </head>
 
 <body>
-<br>
-<h3 align="center"><img src="{% static 'images.png' %}" align="center"> &nbsp &nbsp NUMPY NINJA</h3>
-<br>
-<br>
-<br>
+<div id="wrapper">
 
+
+<!-- Header
+================================================== -->
 {% block content %}
+
 {% endblock %}
+<!-- Footer
+================================================== -->
+<div class="margin-top-15"></div>
+
+<div id="footer">
+	<!-- Main -->
+
+
+	<!-- Bottom -->
+	<div class="container">
+		<div class="footer-bottom">
+			<div class="sixteen columns">
+				<h4>Follow Us</h4>
+				<ul class="social-icons">
+					<li><a class="facebook" href="#"><i class="icon-facebook"></i></a></li>
+					<li><a class="twitter" href="#"><i class="icon-twitter"></i></a></li>
+					<li><a class="gplus" href="#"><i class="icon-gplus"></i></a></li>
+					<li><a class="linkedin" href="#"><i class="icon-linkedin"></i></a></li>
+				</ul>
+				<div class="copyrights">©  Copyright 2018 by <a href="#">Work Scout</a>. All Rights Reserved.</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<!-- Back To Top Button -->
+<div id="backtotop"><a href="#"></a></div>
+
+</div>
+<!-- Wrapper / End -->
+
+
+<!-- Scripts
+================================================== -->
+
+
+<script type="text/javascript">
+	let JUpFileName = document.getElementById("UpFileName")
+	let Jfilename = document.getElementById("filename")
+	Jfilename.addEventListener("change", function (event) {
+
+		let selfile = event.target.files[0].name
+
+		JUpFileName.textContent = selfile
+
+	})
+	document.getElementById("myForm").addEventListener("reset", function (event) {
+
+		JUpFileName.textContent = "No file selected"
+
+	})
+
+	function Checkfiles() {
+
+		var fup = document.getElementById('filename');
+		var fileName = fup.value;
+		var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
+		var oFile = document.getElementById("filename").files[0];
+		if (ext == "docx" || ext == "DOCX") {
+
+			if (oFile.size > 1 && oFile.size <= 5242880) {
+				console.log("File uploaded successfully")
+
+				return true;
+			}
+			else {
+				alert("File size must be less than 5Mb!");
+				return false;
+			}
+		}
+		else {
+			alert("Upload Docx files only");
+			return false;
+
+		}
+	}
+	function goBack() {
+  window.history.back();
+}
+</script>
+
+<script src="{% static 'resumeapp/scripts/jquery-3.4.1.min.js' %}"></script>
+<script src="{% static 'resumeapp/scripts/jquery-migrate-3.1.0.min.js' %}"></script>
+<script src="{% static 'resumeapp/scripts/custom1.js' %}"></script>
+<script src="{% static 'resumeapp/scripts/jquery.superfish.js' %}"></script>
+<script src="{% static 'resumeapp/scripts/jquery.themepunch.tools.min.js' %}"></script>
+<script src="{% static 'resumeapp/scripts/jquery.themepunch.revolution.min.js' %}"></script>
+<script src="{% static 'resumeapp/scripts/jquery.themepunch.showbizpro.min.js' %}"></script>
+<script src="{% static 'resumeapp/scripts/jquery.flexslider-min.js' %}"></script>
+<script src="{% static 'resumeapp/scripts/chosen.jquery.min.js' %}"></script>
+<script src="{% static 'resumeapp/scripts/jquery.magnific-popup.min.js' %}"></script>
+<script src="{% static 'resumeapp/scripts/waypoints.min.js' %}"></script>
+<script src="{% static 'resumeapp/scripts/jquery.counterup.min.js' %}"></script>
+<script src="{% static 'resumeapp/scripts/jquery.jpanelmenu.js' %}"></script>
+<script src="{% static 'resumeapp/scripts/stacktable.js' %}"></script>
+<script src="{% static 'resumeapp/scripts/slick.min.js' %}"></script>
+<script src="{% static 'resumeapp/scripts/headroom.min.js' %}"></script>
 
 
 </body>

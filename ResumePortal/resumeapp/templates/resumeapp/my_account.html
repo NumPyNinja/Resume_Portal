@@ -1,0 +1,174 @@
+﻿{% extends 'resumeapp/Base.html' %}
+{% load staticfiles %}
+{% block content %}
+{% load static%}
+<header class="sticky-header">
+<div class="container">
+	<div class="sixteen columns">
+
+		<!-- Logo -->
+		<div id="logo">
+			<h1><a href="#"><img src="{% static 'resumeapp/images/logo.png' %}" alt="Numpy Ninja" /></a></h1>
+		</div>
+
+	</div>
+</div>
+</header>
+<div class="clearfix"></div>
+
+
+<!-- Titlebar
+================================================== -->
+<div id="titlebar" class="single">
+	<div class="container">
+
+		<div class="sixteen columns">
+			<h2>My Account</h2>
+			<nav id="breadcrumbs">
+				<ul>
+					<li>You are here:</li>
+					<li><a href="#">Home</a></li>
+					<li>My Account</li>
+				</ul>
+			</nav>
+		</div>
+
+	</div>
+</div>
+
+
+<!-- Content
+================================================== -->
+
+<!-- Container -->
+<div class="container">
+
+	<div class="my-account">
+
+		<ul class="tabs-nav">
+			<li class=""><a href="#tab1">Login</a></li>
+			<li><a href="#tab2">Register</a></li>
+		</ul>
+
+		<div class="tabs-container">
+			<!-- Login -->
+			<div class="tab-content" id="tab1" style="display: none;">
+				<form class="login" action="{% url 'resumeapp:Registered_User' %}" method="post" enctype="multipart/form-data">
+					{% csrf_token %}
+
+					<!----------------------------------------------------------------->
+					<p class="form-row form-row-wide">
+
+						{% for message in messages %}
+						{% if "register" in message.extra_tags %}
+						<div class="alert alert-info alert-dismissible fade show" role="alert">
+							<strong>{{ message }}</strong>
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						{% endif %}
+						{% endfor %}
+
+					</p>
+
+					<p class="form-row form-row-wide">
+
+						{% for message in messages %}
+						{% if "login" in message.extra_tags %}
+						<div class="alert alert-danger alert-dismissible fade show" role="alert">
+							<strong>{{ message }}</strong>
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						{% endif %}
+						{% endfor %}
+
+					</p>
+
+
+					<!----------------------------------------------------------------->
+					<p class="form-row form-row-wide">
+						<label for="username">
+							Username:
+							<i class="ln ln-icon-Male"></i>
+							<input class="input-text" type="email" placeholder="Email" name="login" value="" />
+						</label>
+					</p>
+
+					<p class="form-row form-row-wide">
+						<label for="password">
+							Password:
+							<i class="ln ln-icon-Lock-2"></i>
+							<input class="input-text" type="password" placeholder="Password" name="password" />
+						</label>
+					</p>
+
+					<p class="form-row">
+						<input type="submit" class="button border fw margin-top-10" value="Login" />
+
+
+					</p>
+
+					<p class="lost_password">
+						<a href="{% url 'resumeapp:Forgot_Password' %}">Lost Your Password?</a>
+					</p>
+					<input type="text" name="jobdetails" value="{{ jobdetails }}" style="visibility: hidden" />
+
+
+
+				</form>
+
+			</div>
+
+			<!-- Register -->
+			<div class="tab-content" id="tab2" style="display: none;">
+
+				<form method="post" class="register">
+
+				<p class="form-row form-row-wide">
+					<label for="username2">Username:
+						<i class="ln ln-icon-Male"></i>
+						<input type="text" class="input-text" name="username" id="username2" value="" />
+					</label>
+				</p>
+
+				<p class="form-row form-row-wide">
+					<label for="email2">Email Address:
+						<i class="ln ln-icon-Mail"></i>
+						<input type="text" class="input-text" name="email" id="email2" value="" />
+					</label>
+				</p>
+
+				<p class="form-row form-row-wide">
+					<label for="password1">Password:
+						<i class="ln ln-icon-Lock-2"></i>
+						<input class="input-text" type="password" name="password1" id="password1"/>
+					</label>
+				</p>
+
+				<p class="form-row form-row-wide">
+					<label for="password2">Repeat Password:
+						<i class="ln ln-icon-Lock-2"></i>
+						<input class="input-text" type="password" name="password2" id="password2"/>
+					</label>
+				</p>
+
+				<p class="form-row">
+					<input type="submit" class="button border fw margin-top-10" name="register" value="Register" />
+				</p>
+
+				</form>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+
+
+<!-- Footer
+================================================== -->
+<div class="margin-top-30"></div>
+{% endblock %}

@@ -17,7 +17,9 @@ class Resume(models.Model):
     loginid = models.EmailField(unique=True,null=True)
     password = models.CharField(max_length=100,null=True)
     registration = models.CharField(max_length=3,default='No')
-
+    #-----------------------Email--------------------------------
+    email_active_field = models.BooleanField(default=False, null=False)
+    # -----------------------Email--------------------------------
     def __str__(self):
         return self.first_name+" "+self.last_name+" "+self.phone_number+" "+self.email_address+" "+self.education+" "+self.technical_skillset+" "+self.work_experience+" "+self.employment_authorization
 

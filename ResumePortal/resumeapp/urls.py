@@ -23,6 +23,10 @@ urlpatterns =[
     url(r'^JobSearch', views.job_search, name='job-search'),
 
     url(r'^SendEmail', views.send_email, name='send-email'),
+    #-----------------------Email--------------------------------
+    path('activate/<uidb64>/<token>/',views.activate, name='activate'),
+     #-----------------------Email--------------------------------
+    path('my_account/', views.my_account, name='my_account'),
 ]
 
 if settings.DEBUG:

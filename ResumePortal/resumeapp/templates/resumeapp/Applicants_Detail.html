@@ -1,168 +1,121 @@
+{% extends 'resumeapp/Base.html' %}
 {% load staticfiles %}
+{% block content %}
+{% load static%}
+<!-- Header
+================================================== -->
+<header class="dashboard-header">
+<div class="container">
+	<div class="sixteen columns">
+		<!-- Logo -->
+		<div id="logo">
+			<h1><a href="index.html"><img src="{% static 'resumeapp/images/logo.png' %}" alt="Work Scout"/></a></h1>
+		</div>
 
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<title>Applicants Information</title>
-	<script type="text/javascript">
-		function Change() {
-
-		if(document.getElementById("fName").value == ""){
-			document.getElementById("fname_error").innerHTML = "First name must be entered";
-		}else{
-			document.getElementById("fname_error").innerHTML = "";
-		}
-
-		if(document.getElementById("lName").value == ""){
-			document.getElementById("lname_error").innerHTML = "Last name must be entered";
-		}else{
-			document.getElementById("lname_error").innerHTML = "";
-		}
-
-		if(document.getElementById("email").value == ""){
-			document.getElementById("email_error").innerHTML = "Email must be entered";
-		}else{
-			document.getElementById("email_error").innerHTML = "";
-		}
-
-		}
-	</script>
-
-	<style>
-	table, tr, td {
-    border: none;
-    border-spacing:0 25px;
-}
-
-	table.center {
-	  margin-left: auto;
-	  margin-right: auto;
-	}
-
-.image {
-font-family: "Times New Roman", Times, serif;
-font-size:25px;
-position: absolute;
-left: 100px;
-top: 50px;
-}
-</style>
-</head>
-
-<body>
-<br>
-<p class="image" align="center"><img src="{% static 'images.png' %}" align="center"><b> &nbsp &nbsp NUMPY NINJA</b></p>
-<br>
-<br>
-<br>
-
-<form action="{% url 'resumeapp:Update' %}" method="post" onsubmit="return Change();"  >
-	<p align="center" style="font-size:25px"><i>Please Review Details Before Submitting</i></p></br>
-<input type='hidden' name="id" value="{{ resume.id }}" /> {% csrf_token %}
-	<table   width="50%" class="center">
-		<tr bgcolor="white">
-			<td><b><i>Application Id :<i><font color="red">*</font></b></td>
-			<td><b>{{ resume.id }}</b></td>
-		</tr>
-		<tr>
-		<td></td>
-		</tr>
+	</div>
+</div>
+</header>
+<div class="clearfix"></div>
 
 
-		<tr>
-		<td></td>
-		</tr>
-		<tr bgcolor="white">
-			<td><b><i>First Name:</i><font color="red">*</font></b></td>
-			<td><input type="text" id="fName" name="fName" value="{{ resume.first_name }}" required/><div id="fname_error" style="color :red; font-size: 14px;"></div></td>
-		</tr>
+<!-- Titlebar
+================================================== -->
 
-		<tr>
-		<td></td>
-		</tr>
-
-		<tr>
-			<td><b><i>Last Name:</i><font color="red">*</font></b></td><td><input type="text" id="lName" name="lName" value="{{ resume.last_name }}" required /><div id="lname_error" style="color :red; font-size: 14px;"></div></td>
-		</tr>
-
-		<tr><td></td></tr>
-
-		<tr bgcolor="white">
-			<td><b><i>Contact Details:</i><font color="red">*</font></b></td><td><input type="text" name="cDetail" id="cDetail" value="{{ resume.phone_number }}" required/></td>
-		</tr>
-
-		<tr><td></td></tr>
-
-		<tr>
-			<td><b><i>Email ID:</i><font color="red">*</font></b></td><td><input type="text" name="email" id="email" value="{{ resume.email_address }}" required /><div id="email_error" style="color :red; font-size: 14px;"></div></td>
-		</tr>
-
-		<tr><td></td></tr>
+<!-- Dashboard -->
+<div id="dashboard">
 
 
+	<!-- Content
+	================================================== -->
+	<div class="dashboard-content">
+		<!-- Titlebar -->
+		<div class="row">
+			<!-- Table-->
+			<div class="col-lg-12 col-md-12">
 
-		<tr >
-			<td><b><i>Education:</i></b></td><td><input type="text" name="edu" id="edu" value="{{ resume.education }}" /></td>
-		</tr>
+				<div class="dashboard-list-box margin-top-0">
+					<h4>Please Review Details Before Submitting</h4>
+	<form action="{% url 'resumeapp:Update' %}" method="post" onsubmit="return Change();" >
+		<input type='hidden' name="id" value="{{ resume.id }}" /> {% csrf_token %}
+	<div class="dashboard-list-box-content">
 
-		<tr><td></td></tr>
+		<div class="submit-page">
 
-		<tr >
-			<td><b><i>Work Experience:</i></b></td><td><input type="text" name="exp" id="exp" value="{{ resume.workexperience }}" /></td>
-		</tr>
+			<!-- Email -->
+			<div class="form">
+				<h5>First Name:</h5>
+				<input class="search-field" type="text" id="fName" name="fName" value="{{ resume.first_name }}" required />
+			</div>
+			<div class="form">
+				<h5>Last Name:</h5>
+				<input class="search-field" type="text" id="lName" name="lName" value="{{ resume.last_name }}" required />
+			</div>
 
-		<tr><td></td></tr>
+			<!-- Email -->
+			<div class="form">
+				<h5>Contact Details:</h5>
+				<input class="search-field" type="text" name="cDetail" id="cDetail" value="{{ resume.phone_number }}" required />
+			</div>
+			<!-- Email -->
+			<div class="form">
+				<h5>Email ID:</h5>
+				<input class="search-field" type="text"  name="email" id="email" value="{{ resume.email_address }}" required  />
+			</div>
+			<!-- Title -->
+			<div class="form">
+				<h5>Education:</h5>
+				<input class="search-field" type="text" name="edu" id="edu" value="{{ resume.education }}"   />
+			</div>
 
-		<tr bgcolor="white">
-			<td><b><i>Visa Status:</i></b></td><td>
+			<!-- Location -->
+			<div class="form">
+				<h5>Work Experience:</h5>
+				<input class="search-field" type="text" name="exp" id="exp" value="{{ resume.workexperience }}"  />
+			</div>
+			<!-- Location -->
+			<div class="form">
+				<h5>Visa Status:</h5>
 				<select id="vStatus" style="width:145px" name="vStatus">
-					<option value="H1 B" {% if resume.visaStatus == "H1 B" %} selected="true" {% endif %}>H1 B</option>
+					<option value="H1 B" {% if resume.visaStatus ==  "H1 B" %} selected="true" {% endif %}>H1 B</option>
 					<option value="H4" {% if resume.visaStatus == "H4" %} selected="true" {% endif %}>H4</option>
 					<option value="H4 EAD" {% if resume.visaStatus == "H4 EAD" %} selected="true" {% endif %}>H4 EAD</option>
 					<option value="B1" {% if resume.visaStatus == "B1" %} selected="true" {% endif %}>B1</option>
 					<option value="L1" {% if resume.visaStatus == "L1" %} selected="true" {% endif %}>L1</option>
 					<option value="L2" {% if resume.visaStatus == "L2" %} selected="true" {% endif %}>L2</option>
 					<option value="F1" {% if resume.visaStatus == "F1" %} selected="true" {% endif %}>F1</option>
-
 				</select>
-			</td>
-		</tr>
+			</div>
+<div class="form"> </div>
 
+			<!-- Description -->
+			<div class="form" style="width: 100%;">
+				<h5>Technologies:</h5>
+				<input type="text"  name="skills" id="skills" value="{{ resume.technical_skillset }}" style="height:100px"/>
+			</div>
 
-		<tr><td></td></tr>
+			<div class="form" style="width: 100%;">
+				<button class="w3-btn w3-blue"><i>Submit</i></button>
+				<button type="button" class="w3-btn w3-blue" onclick="goBack();"><i>Back to HomePage</i></button>
+			</div>
+		</div>
 
-
-
-		<tr>
-			<td><b><i>Technologies:</i></b></td><td> <input type="text"  name="skills" id="skills" value="{{ resume.technical_skillset }}" style="height:100px"/></td>
-		</tr>
-
-	</table>
-
-	</br></br>
-
-	<table width="30%" align="center">
-		<tr>
-			<td><button class="w3-btn w3-blue"><i>Submit</i></button></td>
-			<td><button type="button" class="w3-btn w3-blue" onclick="goBack();"><i>Back to HomePage</i></button></td>
-
-		</tr>
-	</table>
-
-</fieldset>
-</td></tr>
-</table>
-
+	</div>
 
 </form>
+				</div>
 
-<script>
-function goBack() {
-  window.history.back();
-}
+			    </div>
 
-</script>
-</body>
-</html>
+
+
+		</div>
+
+	</div>
+	<!-- Content / End -->
+
+
+</div>
+<!-- Dashboard / End -->
+{% endblock %}
+
+

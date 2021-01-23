@@ -95,21 +95,20 @@ top: 50px;
 <body>
 
 <center><h1 style="font-size:250%;">Resume Portal</h1>
-<p><font size="5"><i>Congratulations!! You have successfully uploaded your resume.</i></font></p>
+<p><font size="5"><i>An email has been sent to your mailing address , Please verify your email .</i></font></p>
 <br>
 <br>
 <br>
-<form action="{% url 'resumeapp:User_Login' %}" class="form-container" method="post">
-{% csrf_token %}
-<input type="button" class="w3-btn w3-blue" onclick="goBack();" value="Back to Homepage"/>
-<button type="submit" class="w3-btn w3-purple" name="Login" >Login</button>
+
+<input type="button" class="w3-btn w3-blue" action="{% url 'resumeapp:Homepage' %}" value="Back to Homepage"/>
+
 <br>
 <br>
 <br>
 <br>
 <font size="3"><i>Email and Phone number will be used as Login and Password respectively.</i></font>
 </center>
-</form>>
+
 <br>
 <br>
 

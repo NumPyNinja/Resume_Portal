@@ -1,0 +1,9 @@
+Hi {{ user }},
+
+Please click on the link to confirm your registration,
+
+http://{{ domain }}{% url 'resumeapp:activate' uidb64=uid token=token %}
+
+Email and Phone number will be used as Login and Password respectively
+
+If you think, it's not you, then just ignore this email.

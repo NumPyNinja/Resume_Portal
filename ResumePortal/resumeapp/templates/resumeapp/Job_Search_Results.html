@@ -1,317 +1,334 @@
+﻿{% extends 'resumeapp/Base.html' %}
 {% load staticfiles %}
+{% load static%}
+{% block content %}
+<!-- Header
+================================================== -->
+<header class="sticky-header">
+<div class="container">
+	<div class="fourteen columns">
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<!-- Logo -->
+	<div id="logo">
+			<h1><a href="#"><img src="{% static 'resumeapp/images/logo.png' %}" alt="Numpy Ninja" /></a></h1>
+		</div>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-
-    <title>Job Search Results</title>
-      <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-
-
-<style>
-* {
-  box-sizing: border-box;
-}
-
-input[type=text], select, textarea {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  resize: vertical;
-}
-
-label {
-  padding: 12px 12px 12px 0;
-  display: inline-block;
-}
-
-input[type=submit] {
-  background-color: #4CAF50;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  float: right;
-}
-
-input[type=submit]:hover {
-  background-color: #45a049;
-}
-
-.container {
-  border-radius: 5px;
-  background-color: #f2f2f2;
-  padding: 20px;
-}
-
-.col-25 {
-  float: left;
-  width: 25%;
-  margin-top: 6px;
-}
-
-.col-75 {
-
-  float: left;
-  width: 75%;
-  margin-top: 6px;
-}
-
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
-@media screen and (max-width: 600px) {
-  .col-25, .col-75, input[type=submit] {
-    width: 100%;
-    margin-top: 0;
-  }
-}
-</style>
+		<!-- Menu -->
+		<nav id="navigation" class="menu">
 
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body {font-family: Arial, Helvetica, sans-serif;}
-* {box-sizing: border-box;}
 
-/* Button used to open the contact form - fixed at the bottom of the page */
-.open-button {
-  background-color: #555;
-  color: white;
-  padding: 16px 20px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  bottom: 23px;
-  right: 28px;
-  width: 280px;
-}
-
-/* The popup form - hidden by default */
-.form-popup {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 10px;
-  border: 3px solid #f1f1f1;
-  z-index: 9;
-}
-
-/* Add styles to the form container */
-.form-container {
-  max-width: 510px;
-  padding: 10px;
-  background-color: white;
-}
-
-/* Full-width input fields */
-.form-container input[type=text], .form-container input[type=password] {
-  width: 100%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  border: none;
-  background: #f1f1f1;
-}
-
-/* When the inputs get focus, do something */
-.form-container input[type=text]:focus, .form-container input[type=password]:focus {
-  background-color: #ddd;
-  outline: none;
-}
-
-/* Set a style for the submit/login button */
-.form-container .btn {
-  background-color: blue;
-  color: white;
-  padding: 16px 20px;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  margin-bottom:10px;
-  opacity: 0.8;
-}
-
-/* Add a red background color to the cancel button */
-.form-container .cancel {
-  background-color: blue;
-}
-
-/* Add some hover effects to buttons */
-.form-container .btn:hover, .open-button:hover {
-  opacity: 1;
-}
-</style>
-
-    <style>
-table {
-  width:100%;
-}
-table, th, td {
-  border: 1px solid black;
-  border-collapse: collapse;
-}
-th {
-  background: white;
-  position: sticky;
-  top: 0;
-}
-th, td {
-  padding: 15px;
-  text-align: left;
-}
-#t01 tr:nth-child(even) {
-  background-color: #eee;
-}
-#t01 tr:nth-child(odd) {
- background-color: #fff;
-}
-#t01 th {
-  background-color: black;
-  color: white;
-}
-//p {font-size:0; /* Fixes inline block spacing */  }
-//span.align-right { text-align:right; }
-//span { width:100%; display:inline-block; }
-//span a { font-size:16px; }
-
-.image {
-font-family: "Times New Roman", Times, serif;
-font-size:25px;
-position: absolute;
-left: 100px;
-top: 50px;
-}
-
-.sessionid {
-  position: absolute;
-  right: 300px;
-  top: 50px;
-}
-
-h5 {
-  position: absolute;
-  right: 300px;
-  top: 100px;
-}
-
-</style>
-  </head>
-  <body>
-  <br>
-  <br>
-  <p class="image" align="center"><img src="{% static 'images.png' %}" align="center"><b> &nbsp &nbsp NUMPY NINJA</b></p>
-  <br>
-  <br>
-  <br>
-  </body>
-
-  <form action="updatepass1" method="post">
-    {% csrf_token %}
-     <br>
-     <br>
-     <div><h4  class="sessionid" align="right"><i>{{udata}}</i></h4></div>
-      <div><h4>{{udata}}</h4></div>
-     <div id="button2" align="right"><h5><a href="{% url 'resumeapp:Logout' %}">Logout</a></h5></div>
-     <br>
-    </form>
-  <h4 id="selected_category_location" > Job Search Results for  <span style="color:blue"><i>{{selected_category}}</i></span>  in  <span style="color:blue"><i>{{selected_location}}</i></span> </h4>
-    <br>
+			<ul class="responsive float-right">
+				<li><a href="#"><i class="fa fa-user"></i> {{udata}}</a></li>
+				<li><a href="{% url 'resumeapp:Logout' %}"><i class="fa fa-lock"></i> Logout </a></li>
 
 
-  <form>{% csrf_token %}
-  <table>
-  <tr>
-    <th>Job title</th>
-    <th>Job Location</th>
-    <th>Company Name</th>
-    <th>Job Description</th>
-    <th>WhatsApp Msg to Recruiter</th>
-    <th>Email to Recruiter</th>
-    <th>Apply through Link</th>
-  </tr>
+			</ul>
 
- {% for i in dict%}
- <tr>
-    <td>{{i.job_title}}</td>
-    <td>{{i.job_location}}</td>
-    <td>{{i.job_company_name}}</td>
-    <td>{{i.job_description}}</td>
-    {% if i.job_phone_no|length == 2 %}
-        <td>Not Available </td>
-    {% else %}
-       <td>{{i.job_phone_no}}</td>
+		</nav>
 
-<!--       <td><a onclick='send_whatsapp_msg("{{i.job_phone_no}}")' target="_blank" href="">{{i.job_phone_no}}</a></td>-->
-    {% endif %}
-    {% if i.job_email|length == 2 %}
-        <td>Not available</td>
-    {% else %}
-        <td>{{i.job_email}}</td>
-<!--        <td><a onclick='send_email("{{i.job_email}}","{{i.company_name}}")' href="#myForm" onloadstart="" onloadeddata="">Send Email</a> </td> -->
-    {% endif %}
-    <td><a href="{{i.job_link}}" target="_blank">Click Here</a></td>
- </tr>
-{% endfor %}
-  </table>
-  </form>
 
-<div class="form-popup" id="myForm">
-  <form action="{% url 'resumeapp:send-email' %}" method="post" class="form-container"> {% csrf_token %}
-  <label for="email"><b>Send Email to </b></label>
-    <input id="email" type="text" placeholder="Send Email to" name="email" style="width:500px" disabled>
-    <input type="hidden" id="email_list" name="email_list" >
-    <label for="message"><b></b></label>
-     <div class="col-75">
-        <textarea id="message" name="message" placeholder="Write something.." style="height:500px; width:500px"> Hello, </textarea>
-      </div>
-    <button type="submit" class="btn">Send Email</button>  <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-  </form>
+	</div>
 </div>
-</body>
-</html>
+</header>
+<div class="clearfix"></div>
+
+{{ dict|json_script:"dictdatainjson" }}
+
+<!-- Titlebar
+================================================== -->
+<div id="titlebar">
+	<div class="container">
+	{% if postbacks == "Yes"  %}
+		<div class="ten columns">
+			<span>We found {{ dict|length }} jobs matching :</span>
+			<h2>{{selected_category}} at {{selected_location}}</h2>
+		</div>
+		{% else %}
+		<div class="ten columns">
+			<span>Find your Next Opportunity </span>
+
+		</div>
+		{% endif %}
+
+	<div class="clearfix"></div>
+		<div class="fourteen columns">
+            <form action="{% url 'resumeapp:JobList' %}" method="post">
+     {% csrf_token %}
 
 
+<table align="center" border="1px" width = "100%">
+    <tr>
+        <td> <h4 align="center"><strong>Find : </strong> </h4></td>
+        <td>
+            <select name="sjobcategory" id="sjobcategory">
+                    <!--<option value="" selected disabled hidden><b>Job Title</b></option>-->
+                    <option value="Python Developers">Python Developer</option>
+                    <option value="Data Science">Data Science</option>
+                    <option value="SDET">SDET</option>
+                    <option value="Software Quality Assurance Engineer">Software Quality Assurance Engineer</option>
+                    <option value="Java Developer">Java Developer</option>
+
+            </select>
+        </td>
+          <td>
+            <select name="sjoblocation" id="sjoblocation">
+                <!--<option value="" selected disabled hidden>Job Location</option>-->
+                <option value="Austin, TX">Austin, TX</option>
+                <option value="Atlanta, GA">Atlanta, GA</option>
+                <option value="Baltimore, MD">Baltimore, MD</option>
+                <option value="Boston, MA">Boston, MA</option>
+                <option value="Boulder, CO">Boulder, CO</option>
+                <option value="Charlotte, NC">Charlotte, NC</option>
+                <option value="Colorado Springs, CO">Colorado Springs, CO</option>
+                <option value="Columbus, OH">Columbus, OH</option>
+                <option value="Dallas, TX">Dallas, TX</option>
+                <option value="Denver, CO">Denver, CO</option>
+                <option value="Durham-Chapel Hill, NC">Durham-Chapel Hill, NC</option>
+                <option value="Huntsville, AL">Huntsville, AL</option>
+                <option value="Jacksonville, FL">Jacksonville, FL</option>
+                <option value="Nashville, TN">Nashville, TN</option>
+                <option value="New York, NY">New York, NY</option>
+                <option value="Raleigh, NC">Raleigh, NC</option>
+                <option value="San Diego, CA">San Diego, CA</option>
+                <option value="San Francisco, CA">San Francisco, CA</option>
+                <option value="San Jose, CA">San Jose, CA</option>
+                <option value="Seattle, WA">Seattle, WA</option>
+                <option value="Tampa, FL">Tampa, FL</option>
+                <option value="Washington, DC">Washington, DC</option>
+            </select>
+        </td>
+           <td><button class="w3-btn w3-blue">Search</button></td>
+    </tr>
+</table> </form>
+		</div>
+		<div class="six columns">
+
+          	<div id="small-dialog" class="zoom-anim-dialog mfp-hide apply-popup">
+					<div class="small-dialog-headline">
+						<h2>Apply For This Job</h2>
+					</div>
+
+					<div class="small-dialog-content">
+<div class="container">
+
+	<!-- Recent Jobs -->
+	<div class="eleven columns">
+	<div class="padding-right">
+
+		<!-- Company Info -->
+		<div class="company-info">
+			<div class="content">
+				<h4 id = "companyname">King LLC</h4>
+				<span><a href="#" id="jobwebsite"><i class="fa fa-link"></i> Website</a></span>
+				<span><a href="#"><i class="fa fa-envelope-square"></i><span id="jobemail"> </span></a></span>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="company-info" id="JobDescription" > </div>
+
+
+	</div>
+	</div>
+
+
+	<!-- Widgets -->
+	<div class="five columns">
+
+		<!-- Sort by -->
+		<div class="widget">
+			<h4>Overview</h4>
+
+			<div class="job-overview">
+
+				<ul>
+					<li>
+						<i class="fa fa-map-marker"></i>
+						<div>
+							<strong>Location:</strong>
+							<span id="joblocation" >   </span>
+						</div>
+					</li>
+					<li>
+						<i class="fa fa-user"></i>
+						<div>
+							<strong>Job Title:</strong>
+							<span id="jobtitle"> </span>
+						</div>
+					</li>
+					<li>
+						<i class="fa fa-phone"></i>
+						<div>
+							<strong >Phone No</strong>
+							<span id="jobphoneno"></span>
+						</div>
+					</li>
+
+				</ul>
+
+
+				<a href="#small-dialog" class="popup-with-zoom-anim button">Apply For This Job</a>
+
+				<div id="small-dialog" class="zoom-anim-dialog mfp-hide apply-popup">
+					<div class="small-dialog-headline">
+						<h2>Apply For This Job</h2>
+					</div>
+
+					<div class="small-dialog-content">
+						<form action="#" method="get" >
+							<input type="text" placeholder="Full Name" value=""/>
+							<input type="text" placeholder="Email Address" value=""/>
+							<textarea placeholder="Your message / cover letter sent to the employer"></textarea>
+
+							<!-- Upload CV -->
+							<div class="upload-info"><strong>Upload your CV (optional)</strong> <span>Max. file size: 5MB</span></div>
+							<div class="clearfix"></div>
+
+							<label class="upload-btn">
+							    <input type="file" multiple />
+							    <i class="fa fa-upload"></i> Browse
+							</label>
+							<span class="fake-input">No file selected</span>
+
+							<div class="divider"></div>
+
+							<button class="send">Send Application</button>
+						</form>
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+	<!-- Widgets / End -->
+
+
+</div>
+
+					</div>
+
+				</div>
+
+		</div>
+
+	</div>
+</div>
+
+
+<!-- Content
+================================================== -->
+<div class="container">
+	<!-- Recent Jobs -->
+	<div class="sixteen columns">
+	<div class="padding-right">
+
+		<div class="listings-container">
+        <br/>
+			<!-- Listing -->
+			{% for  i in  dict  %}
+            <a href="#small-dialog"
+                class=" popup-with-zoom-anim {% cycle 'listing full-time' 'listing internship' 'listing freelance' 'listing part-time' %}"
+                onclick="myJavascriptFunction('{{ forloop.counter }}')"
+                  >
+				<div class="listing-logo">
+					<img src="images/job-list-logo-01.png" alt="">
+				</div>
+				<div class="listing-title">
+					<h4>{{i.job_title}} <span class="listing-type">Full-Time</span> </h4>
+					<h6>  {{ i.job_description|truncatechars:180 }} </h6>
+
+					<ul class="listing-icons">
+						<li><i class="ln ln-icon-Management"></i> {{i.job_company_name}} </li>
+						<li><i class="ln ln-icon-Map2"></i> {{i.job_location}}</li>
+						{% if i.job_date_posted == "Posted today"  %}
+						<li><div class="listing-date new">new</div></li>
+                        {% else %}
+						<li><div class="listing-date">{{ i.job_date_posted }}</div></li>
+						{% endif %}
+					</ul>
+				</div>
+			</a>
+            {% endfor %}
+			
+		</div>
+		<div class="clearfix"></div>
+
+		
+
+	</div>
+	</div>
+
+
+	<!-- Widgets -->
+	
+	<!-- Widgets / End -->
+
+
+</div>
 
 <script>
+alert({{ postbacks }});
+    function myJavascriptFunction( count )
+    {
+       const dictdatainjson = JSON.parse(document.getElementById('dictdatainjson').textContent);
 
-function send_email(email, company_name){
 
-alert(email);
-document.getElementById("email_list").value= email;
-document.getElementById("email").value= company_name+ " Recruiter";
-document.getElementById("myForm").style.display = "block";
-}
+       desc =  ( dictdatainjson[count-1].job_description )
+       var myTextArea1 = document.getElementById("JobDescription")
+       myTextArea1.innerHTML = desc
 
-function send_whatsapp_msg(phone_no_list){
-  var list=phone_no_list.split(',');
-  alert(list);
-  for (num of list) {
+       loc = ( dictdatainjson[count-1].job_location )
+       var myTextArea2 = document.getElementById("joblocation")
+       myTextArea2.innerHTML = loc
 
-   num= num.replace(/[^0-9]/g, "");
-   console.log(num);
-   alert(num);
-   url="https://web.whatsapp.com/send?phone=+1"+num+"&text=hi";
-   window.open(url, "_blank");
-  }
-}
 
-function closeForm() {
-  document.getElementById("myForm").style.display = "none";
-}
+       jweb = ( dictdatainjson[count-1].job_link )
+       var myTextAreaT = document.getElementById("jobwebsite")
+       myTextAreaT.href = jweb
+
+       jtitle = ( dictdatainjson[count-1].job_company_name )
+       var myTextArea3 = document.getElementById("companyname")
+       myTextArea3.innerHTML =  jtitle
+
+       cname = ( dictdatainjson[count-1].job_company_name )
+       var myTextArea4 = document.getElementById("jobtitle")
+       myTextArea4.innerHTML =  cname
+
+       jobemail = ( dictdatainjson[count-1].job_email )
+       var myTextArea5 = document.getElementById("jobemail")
+       if(  ( typeof jobemail === 'undefined') || (jobemail === null )  )
+       {
+           myTextArea5.innerHTML =  "Not available"
+       }
+       else
+       {
+          if (jobemail.length <= 2)
+           myTextArea5.innerHTML =  "Not available"
+           else
+           myTextArea5.innerHTML =  jobemail
+       }
+
+
+       job_phone_no = ( dictdatainjson[count-1].job_phone_no )
+       var myTextArea6 = document.getElementById("jobphoneno")
+       if(  ( typeof job_phone_no === 'undefined') || ( job_phone_no === null )  )
+       {
+           myTextArea6.innerHTML =  "Not available"
+       }
+       else
+       {
+          if (job_phone_no.length <= 2)
+           myTextArea6.innerHTML =  "Not available"
+           else
+           myTextArea6.innerHTML =  job_phone_no
+       }
+
+    }
 </script>
+
+<!-- Footer
+================================================== -->
+{% endblock %}
