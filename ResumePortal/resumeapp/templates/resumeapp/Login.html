@@ -96,10 +96,10 @@ top: 50px;
 
 				<div data-validate = "valid email is abc@.d">
 				<label for="email" align="left"><b>Email</b></label><br>
-	 			<input type="email" placeholder="Email" id="email" name="email" value="{{object.email_address }}" required><br>
+	 			<input type="email" placeholder="Email" id="email" name="email" maxlength="50" value="{{object.email_address }}" required><br>
 
 	 			<label for="password1" align="left"><b>Password</b></label><br>
-	 			<input type="text" placeholder="Password" id="pass1" name="pass1" value="{{object.phone_number}}" required><br>
+	 			<input type="text" placeholder="Password" id="pass1" name="pass1" maxlength="12" value="{{object.phone_number}}" required><br>
 
 				<br>
 				</div>
