@@ -54,7 +54,9 @@ def upload_page(request):
         print(request.session['eid'])
         print(request.session.keys())
         return render(request, 'resumeapp/Job_Search_Results.html', {'udata': request.session['eid']})
-    return render(request, 'resumeapp/Homepage.html')
+    else:
+        totaljobs = Job_Details.objects.all().count()
+        return render(request, 'resumeapp/Homepage.html', {'totaljobs': totaljobs })
 
 #Open  the my account page
 def my_account(request):
@@ -239,6 +241,7 @@ def reset_password(request):
 
 
 def update_reset_password(request):
+
     if request.method == 'POST':
 
             email = request.POST['email']
