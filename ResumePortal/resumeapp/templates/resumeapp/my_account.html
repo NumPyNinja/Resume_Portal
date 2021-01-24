@@ -8,7 +8,7 @@
 
 		<!-- Logo -->
 		<div id="logo">
-			<h1><a href="#"><img src="{% static 'resumeapp/images/logo.png' %}" alt="Numpy Ninja" /></a></h1>
+			<h1><a href="{% url 'resumeapp:Homepage' %}"><img src="{% static 'resumeapp/images/logo.png' %}" alt="Numpy Ninja" /></a></h1>
 		</div>
 
 	</div>
@@ -63,9 +63,9 @@
 						{% if "register" in message.extra_tags %}
 						<div class="alert alert-info alert-dismissible fade show" role="alert">
 							<strong>{{ message }}</strong>
-							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<!--button type="button" class="close" data-dismiss="alert" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
-							</button>
+							</button-->
 						</div>
 						{% endif %}
 						{% endfor %}
@@ -78,9 +78,9 @@
 						{% if "login" in message.extra_tags %}
 						<div class="alert alert-danger alert-dismissible fade show" role="alert">
 							<strong>{{ message }}</strong>
-							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<!--button type="button" class="close" data-dismiss="alert" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
-							</button>
+							</button-->
 						</div>
 						{% endif %}
 						{% endfor %}

@@ -32,8 +32,8 @@ ALLOWED_HOSTS = ['127.0.0.1','localhost']
 EMAIL_USE_TLS = True #email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = '' #ex anshumalikanshu@gmail.com
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_USER = 'forchangehopeful@gmail.com' #ex anshumalikanshu@gmail.com
+EMAIL_HOST_PASSWORD = 'balaji1304'
 EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 MAILER_EMAIL_BACKEND = EMAIL_BACKEND
@@ -110,17 +110,17 @@ DATABASES = {
     }"""
 
 
-DATABASES = {
-'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PASSWORD'),
-        'HOST': 'ec2-50-17-90-177.compute-1.amazonaws.com',
-        'PORT': '5432',
-    }
-
-    }
+# DATABASES = {
+# 'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.environ.get('DB_NAME'),
+#         'USER': os.environ.get('DB_USER'),
+#         'PASSWORD': os.environ.get('DB_PASSWORD'),
+#         'HOST': 'ec2-50-17-90-177.compute-1.amazonaws.com',
+#         'PORT': '5432',
+#     }
+#
+#     }
 
 
 """DATABASES = {
