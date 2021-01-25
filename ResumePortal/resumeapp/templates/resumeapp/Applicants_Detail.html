@@ -36,7 +36,7 @@
 				<div class="dashboard-list-box margin-top-0">
 					<h4>Please Review Details Before Submitting</h4>
 	<form action="{% url 'resumeapp:Update' %}" method="post" onsubmit="return Change();" >
-		<input type='hidden' name="id" value="{{ resume.id }}" /> {% csrf_token %}
+		<!--input type='hidden' name="id" value="{{ resume.id }}" /--> {% csrf_token %}
 	<div class="dashboard-list-box-content">
 
 		<div class="submit-page">

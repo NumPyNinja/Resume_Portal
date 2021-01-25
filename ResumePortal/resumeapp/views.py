@@ -97,14 +97,13 @@ def applicant_file(request):
         # Converting to JSON
         loaded_json = json.loads(json.dumps(resume_dict))
         print(loaded_json)
-
+        # request.session['ResumeDetails'] = loaded_json
         """
                 # converting into .JSON file for .HTML
                 with open('C:\\Users\\prade\\PycharmProjects\\ResumePortal\\resumeapp\\templates\\resumeapp\\Resume_details.json',
                           'w') as fp:
                     json.dump(loaded_json, fp)
          """
-
         resume = Resume()
         resume = Resume(first_name=resume_dict.get("name"),
                         last_name=resume_dict.get("name"),
@@ -115,7 +114,8 @@ def applicant_file(request):
                         work_experience=resume_dict.get("Work Experience"),
                         technical_skillset=resume_dict.get("skills"),
                         education = resume_dict.get("degree"))
-        resume.save()
+
+        # resume.save() // jira 81 error
 
         context = {'resume': resume}
 
@@ -126,7 +126,7 @@ def applicant_file(request):
 def update_db(request):
     if request.method == 'POST':
           password_temp = sha256_crypt.encrypt(request.POST['cDetail'])
-          update_resume = Resume(id = request.POST['id'],
+          update_resume = Resume(       #id = request.POST['id'], // jira 81 error
                        first_name = request.POST['fName'],
                        last_name = request.POST['lName'],
                        phone_number = request.POST['cDetail'],
