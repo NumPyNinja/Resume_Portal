@@ -43,16 +43,16 @@ from django.template.loader import render_to_string
 #-----------------------Email--------------------------------
 # Open upload page
 def upload_page(request):
-    print("First Page")
-    print(request)
+    # print("First Page")
+    # print(request)
     request.session.set_test_cookie()
-    print(request.session.get_expiry_date())
-    print(request.session.get_expiry_age())
-    print(request.session.session_key)
-    print(request.session.keys())
+    # print(request.session.get_expiry_date())
+    # print(request.session.get_expiry_age())
+    # print(request.session.session_key)
+    # print(request.session.keys())
     if request.session.has_key('eid'):
-        print(request.session['eid'])
-        print(request.session.keys())
+        # print(request.session['eid'])
+        # print(request.session.keys())
         return render(request, 'resumeapp/Job_Search_Results.html', {'udata': request.session['eid']})
     else:
         totaljobs = Job_Details.objects.all().count()
@@ -60,18 +60,18 @@ def upload_page(request):
 
 #Open  the my account page
 def my_account(request):
-    print ("my account page ")
+    # print ("my account page ")
     return render(request, 'resumeapp/my_account.html')
 
 #Open job search page
 def job_search(request):
-    print ("Job Search Page")
+    # print ("Job Search Page")
     return render(request, 'resumeapp/Job_Search.html')
 
 
 #Open  the applicant details page
 def applicant_file(request):
-    print ("Second Page ")
+    # print ("Second Page ")
 
     if request.method== 'POST':
 
@@ -83,20 +83,20 @@ def applicant_file(request):
 
         dir_location = os.path.join(BASE_DIR, 'media')
         file_location = dir_location + "/*.docx"
-        print("file location", file_location)
+        # print("file location", file_location)
 
         list_of_files = glob.glob(file_location)
         latest_file = max(list_of_files, key=os.path.getctime)
-        print(latest_file)
+        # print(latest_file)
 
         # Parse the uploaded resume
         parsed_details = ResumeParser(latest_file).get_extracted_data()
-        print(parsed_details)
+        # print(parsed_details)
         resume_dict =  parsed_details
 
         # Converting to JSON
-        loaded_json = json.loads(json.dumps(resume_dict))
-        print(loaded_json)
+        # loaded_json = json.loads(json.dumps(resume_dict))
+        # print(loaded_json)
         # request.session['ResumeDetails'] = loaded_json
         """
                 # converting into .JSON file for .HTML
@@ -165,17 +165,14 @@ def update_db(request):
 
 
 def user_login(request):
-    print(request.session['uid'])
-    if request.method == 'POST':
-        print (request.session)
 
-        if (request.session.has_key('uid')):
-            resume = models.Resume.objects.get(id=request.session['uid'])
-            print (resume.email_address)
-            context = {'object': resume}
-            resume.registration = 'Yes'
-            resume.save()
-            return render(request,'resumeapp/my_account.html',context)
+    # if request.method == 'POST':
+       # if (request.session.has_key('uid')):
+       #      resume = models.Resume.objects.get(id=request.session['uid'])
+       #      context = {'object': resume}
+       #      resume.registration = 'Yes'
+       #      resume.save()
+       #      return render(request,'resumeapp/my_account.html',context)
     return render(request,'resumeapp/my_account.html')
 
 def update_password(request):
