@@ -44,7 +44,7 @@
 			<!-- Email -->
 			<div class="form">
 				<h5>First Name:</h5>
-				<input class="search-field" type="text" id="fName" name="fName" value="{{ resume.first_name }}" required />
+				<input class="search-field" type="text" id="fName"  name="fName" value="{{ resume.first_name }}" required />
 			</div>
 			<div class="form">
 				<h5>Last Name:</h5>
@@ -54,12 +54,12 @@
 			<!-- Email -->
 			<div class="form">
 				<h5>Contact Details:</h5>
-				<input class="search-field" type="text" name="cDetail" id="cDetail" value="{{ resume.phone_number }}" required />
+				<input class="search-field" type="text" name="cDetail" id="cDetail"  value="{{ resume.phone_number }}" required />
 			</div>
 			<!-- Email -->
 			<div class="form">
 				<h5>Email ID:</h5>
-				<input class="search-field" type="text"  name="email" id="email" value="{{ resume.email_address }}" required  />
+				<input class="search-field" type="text"  name="email" id="email"  value="{{ resume.email_address }}" required  />
 			</div>
 			<!-- Title -->
 			<div class="form">
@@ -94,7 +94,7 @@
 			</div>
 
 			<div class="form" style="width: 100%;">
-				<button class="w3-btn w3-blue"><i>Submit</i></button>
+				<button class="w3-btn w3-blue" onclick="return jsvalidate();"><i>Submit</i></button>
 				<button type="button" class="w3-btn w3-blue" onclick="goBack();"><i>Back to HomePage</i></button>
 			</div>
 		</div>
@@ -116,6 +116,39 @@
 
 </div>
 <!-- Dashboard / End -->
+<script>
+function jsvalidate() {
+
+var Lname = document.getElementById("lName").value;
+var Fname = document.getElementById("fName").value;
+var Email = document.getElementById("email").value;
+var Phone = document.getElementById("cDetail").value;
+
+if ( ( typeof(Lname) == "undefined" || ( ! Lname )) )
+{
+    alert( "Please enter a valid Last Name " );
+    return false;
+}
+if ( ( typeof(Fname) == "undefined" || ( ! Fname )) )
+{
+    alert( "Please enter a valid First Name " );
+    return false;
+}
+if ( ( typeof(Email) == "undefined" || ( ! Email ))  || !( validateEmail(Email)) )
+{
+    alert( "Please enter a valid Email " );
+    return false;
+}
+if ( ( typeof(Phone) == "undefined" || ( !Phone )) )
+{
+    alert( "Please enter a valid Phone No. " );
+    return false;
+}
+
+return true;
+}
+</script>
+
 {% endblock %}
 
 

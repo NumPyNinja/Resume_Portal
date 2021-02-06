@@ -93,7 +93,7 @@
 						<label for="username">
 							Username:
 							<i class="ln ln-icon-Male"></i>
-							<input class="input-text" type="email" placeholder="Email" name="login" value="" />
+							<input class="input-text" type="email" placeholder="Email" name="login" value="" id = "login"  />
 						</label>
 					</p>
 
@@ -101,12 +101,12 @@
 						<label for="password">
 							Password:
 							<i class="ln ln-icon-Lock-2"></i>
-							<input class="input-text" type="password" placeholder="Password" name="password" />
+							<input class="input-text" type="password" placeholder="Password" name="password" id = "password"/>
 						</label>
 					</p>
 
 					<p class="form-row">
-						<input type="submit" class="button border fw margin-top-10" value="Login" />
+						<input type="submit" class="button border fw margin-top-10" value="Login"  onclick="return login1();" />
 
 
 					</p>
@@ -171,4 +171,26 @@
 <!-- Footer
 ================================================== -->
 <div class="margin-top-30"></div>
+<script>
+
+function login1() {
+
+var username = document.getElementById("login").value;
+var password = document.getElementById("password").value;
+
+if  ( (typeof(username) == "undefined") || ( ! username )  ||  ( ! validateEmail( username ) )  )
+{
+    alert( "Please enter a valid username " );
+    return false;
+}
+
+if ( ( typeof(password) == "undefined" || ( !password )) )
+{
+    alert( "Please enter a valid Password " );
+    return false;
+}
+
+return true;
+}
+</script>
 {% endblock %}

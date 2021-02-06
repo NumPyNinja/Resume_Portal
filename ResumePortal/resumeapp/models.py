@@ -17,6 +17,8 @@ class Resume(models.Model):
     loginid = models.EmailField(unique=True,null=True)
     password = models.CharField(max_length=100,null=True)
     registration = models.CharField(max_length=3,default='No')
+    # -----------------------form validation--------------------------------
+    link_to_Resume_on_disk = models.FileField()
     #-----------------------Email--------------------------------
     email_active_field = models.BooleanField(default=False, null=False)
     # -----------------------Email--------------------------------

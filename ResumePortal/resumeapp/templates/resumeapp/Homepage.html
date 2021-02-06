@@ -42,13 +42,15 @@
 			<form action="{% url 'resumeapp:ApplicantDetails' %}" method="post" enctype="multipart/form-data" id="myForm">
 				 {% csrf_token %}
 				<!-- Upload CV -->
+
 				<div class="search-container">
-					<h2>Find job with us</h2>
+					<h2>Find job with us </h2>
 					<div class="upload-info"><strong>Upload your CV (optional)</strong> <span>Max. file size: 5MB</span></div>
 					<div class="clearfix"></div>
 
 					<label class="upload-btn">
-						<input type="file" multiple="" name="filename" id="filename" required>
+						<input type="file" multiple="" name="filename" id="filename" required >
+
 						<i class="fa fa-upload"></i> Browse
 					</label>
 					<span class="fake-input" id="UpFileName">No file selected</span>

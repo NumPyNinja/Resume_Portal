@@ -18,6 +18,7 @@ import os
 from docx import Document
 import json
 from .models import Resume,Job_Details
+from .forms import UploadForm
 
 import email, smtplib, ssl
 from email import encoders
@@ -43,37 +44,30 @@ from django.template.loader import render_to_string
 #-----------------------Email--------------------------------
 # Open upload page
 def upload_page(request):
-    # print("First Page")
-    # print(request)
     request.session.set_test_cookie()
-    # print(request.session.get_expiry_date())
-    # print(request.session.get_expiry_age())
-    # print(request.session.session_key)
-    # print(request.session.keys())
+
     if request.session.has_key('eid'):
-        # print(request.session['eid'])
-        # print(request.session.keys())
         return render(request, 'resumeapp/Job_Search_Results.html', {'udata': request.session['eid']})
     else:
+        U_form = UploadForm()
         totaljobs = Job_Details.objects.all().count()
-        return render(request, 'resumeapp/Homepage.html', {'totaljobs': totaljobs })
+        return render(request, 'resumeapp/Homepage.html', {'totaljobs': totaljobs , 'form': U_form })
 
 #Open  the my account page
 def my_account(request):
-    # print ("my account page ")
+
     return render(request, 'resumeapp/my_account.html')
 
 #Open job search page
 def job_search(request):
-    # print ("Job Search Page")
+
     return render(request, 'resumeapp/Job_Search.html')
 
 
 #Open  the applicant details page
 def applicant_file(request):
-    # print ("Second Page ")
 
-    if request.method== 'POST':
+    if request.method == 'POST':
 
         fileuploaded = request.FILES['filename']
         fs = FileSystemStorage()
@@ -83,27 +77,14 @@ def applicant_file(request):
 
         dir_location = os.path.join(BASE_DIR, 'media')
         file_location = dir_location + "/*.docx"
-        # print("file location", file_location)
 
         list_of_files = glob.glob(file_location)
         latest_file = max(list_of_files, key=os.path.getctime)
-        # print(latest_file)
 
         # Parse the uploaded resume
         parsed_details = ResumeParser(latest_file).get_extracted_data()
-        # print(parsed_details)
         resume_dict =  parsed_details
 
-        # Converting to JSON
-        # loaded_json = json.loads(json.dumps(resume_dict))
-        # print(loaded_json)
-        # request.session['ResumeDetails'] = loaded_json
-        """
-                # converting into .JSON file for .HTML
-                with open('C:\\Users\\prade\\PycharmProjects\\ResumePortal\\resumeapp\\templates\\resumeapp\\Resume_details.json',
-                          'w') as fp:
-                    json.dump(loaded_json, fp)
-         """
         resume = Resume()
         resume = Resume(first_name=resume_dict.get("name"),
                         last_name=resume_dict.get("name"),
@@ -142,6 +123,7 @@ def update_db(request):
           update_resume.save()
 
           # -----------------------Email--------------------------------
+
           token = gen_token(update_resume)
           current_site = get_current_site(request)
           message = render_to_string('resumeapp/mail_body.txt', {
@@ -153,10 +135,6 @@ def update_db(request):
           email = EmailMessage('Please verify account', message, to=[update_resume.email_address])
           email.send()
 
-          # request.session['uid'] = request.POST['id']
-          # print (request.session.session_key)
-          # print (request.session['uid'])
-          # request.session.modified = 'True'
           # -----------------------Email--------------------------------
 
 
@@ -166,13 +144,6 @@ def update_db(request):
 
 def user_login(request):
 
-    # if request.method == 'POST':
-       # if (request.session.has_key('uid')):
-       #      resume = models.Resume.objects.get(id=request.session['uid'])
-       #      context = {'object': resume}
-       #      resume.registration = 'Yes'
-       #      resume.save()
-       #      return render(request,'resumeapp/my_account.html',context)
     return render(request,'resumeapp/my_account.html')
 
 def update_password(request):
@@ -205,24 +176,17 @@ def registered_user(request):
     if request.method == 'POST':
         user_email = request.POST['login']
         pass1 = request.POST['password']
-        print (pass1)
-        print (request.session.session_key)
-
         email_exist = Resume.objects.filter(loginid = user_email,email_active_field = True)
 
         if email_exist:
 
             password_exist = Resume.objects.filter(loginid=user_email).values_list('password',flat=True)
-            print(password_exist)
             new_pass = list(password_exist)
             pass2 = (new_pass[0])
-            print(pass2)
             password_check=sha256_crypt.verify(pass1,pass2)
-            print(password_check)
 
             if email_exist and password_check:
                 request.session['eid'] = user_email
-                print (request.session['eid'])
                 return render(request,'resumeapp/Job_Search_Results.html',{'udata': request.session['eid']})
             else:
                 messages.error(request,"Please Use valid Credentials..Incorrect Password",extra_tags='login')
