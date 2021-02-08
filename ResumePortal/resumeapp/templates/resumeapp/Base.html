@@ -87,7 +87,7 @@
 
 <script type="text/javascript">
 	let JUpFileName = document.getElementById("UpFileName")
-	let Jfilename = document.getElementById("filename")
+	let Jfilename = document.getElementById("id_filename")
 	Jfilename.addEventListener("change", function (event) {
 
 		let selfile = event.target.files[0].name
@@ -103,10 +103,10 @@
 
 	function Checkfiles() {
 
-		var fup = document.getElementById('filename');
+		var fup = document.getElementById('id_filename');
 		var fileName = fup.value;
 		var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
-		var oFile = document.getElementById("filename").files[0];
+		var oFile = document.getElementById("id_filename").files[0];
 		if (ext == "docx" || ext == "DOCX") {
 
 			if (oFile.size > 1 && oFile.size <= 5242880) {

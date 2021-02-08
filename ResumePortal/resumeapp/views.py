@@ -69,24 +69,27 @@ def applicant_file(request):
 
     if request.method == 'POST':
 
-        fileuploaded = request.FILES['filename']
-        fs = FileSystemStorage()
-        fs.save(fileuploaded.name, fileuploaded)
+        form = UploadForm(request.POST, request.FILES)
+        if form.is_valid():
 
-        BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            fileuploaded = request.FILES['filename']
+            fs = FileSystemStorage()
+            fs.save(fileuploaded.name, fileuploaded)
 
-        dir_location = os.path.join(BASE_DIR, 'media')
-        file_location = dir_location + "/*.docx"
+            BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-        list_of_files = glob.glob(file_location)
-        latest_file = max(list_of_files, key=os.path.getctime)
+            dir_location = os.path.join(BASE_DIR, 'media')
+            file_location = dir_location + "/*.docx"
+
+            list_of_files = glob.glob(file_location)
+            latest_file = max(list_of_files, key=os.path.getctime)
 
         # Parse the uploaded resume
-        parsed_details = ResumeParser(latest_file).get_extracted_data()
-        resume_dict =  parsed_details
+            parsed_details = ResumeParser(latest_file).get_extracted_data()
+            resume_dict =  parsed_details
 
-        resume = Resume()
-        resume = Resume(first_name=resume_dict.get("name"),
+            resume = Resume()
+            resume = Resume(first_name=resume_dict.get("name"),
                         last_name=resume_dict.get("name"),
                         phone_number=resume_dict.get("mobile_number"),
                         #loginid=resume_dict.get("email"),
@@ -96,11 +99,14 @@ def applicant_file(request):
                         technical_skillset=resume_dict.get("skills"),
                         education = resume_dict.get("degree"))
 
-        # resume.save() // jira 81 error
-
-        context = {'resume': resume}
-
-        return render(request, 'resumeapp/Applicants_Detail.html', context)
+            # resume.save() // jira 81 error
+            context = {'resume': resume}
+            return render(request, 'resumeapp/Applicants_Detail.html', context)
+        else:
+            print("form is not valid")
+            form = UploadForm(request.POST, request.FILES)
+            totaljobs = Job_Details.objects.all().count()
+            return render(request, 'resumeapp/Homepage.html', {'totaljobs': totaljobs , 'form': form })
 
 
 #Getparsed Details from second page and store in DB

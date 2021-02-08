@@ -23,7 +23,7 @@
 		</nav>
 
 		<!-- Navigation -->
-		
+
 
 	</div>
 </div>
@@ -44,18 +44,23 @@
 				<!-- Upload CV -->
 
 				<div class="search-container">
-					<h2>Find job with us </h2>
-					<div class="upload-info"><strong>Upload your CV (optional)</strong> <span>Max. file size: 5MB</span></div>
+					<h2>Find a job with us </h2>
+					<div class="announce">
+						{{ form.errors.filename }}
+					</div>
+					<div class="upload-info"><strong>Upload your CV</strong> <span>Max. file size: 5MB</span></div>
 					<div class="clearfix"></div>
 
 					<label class="upload-btn">
-						<input type="file" multiple="" name="filename" id="filename" required >
+
+						<!--input type="file" multiple="" name="filename" id="filename" required -->
+                        {{ form.filename }}
 
 						<i class="fa fa-upload"></i> Browse
 					</label>
 					<span class="fake-input" id="UpFileName">No file selected</span>
 
-					<button type="submit" style="margin-bottom: 10px" onclick="return Checkfiles()">Submit</button>
+					<button type="submit" style="margin-bottom: 10px"  onclick="return Checkfiles()" >Submit</button>
 					<button type="reset" style="margin-bottom: 10px">Cancel</button>
 
 					<div class="announce">
