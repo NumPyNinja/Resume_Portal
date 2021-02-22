@@ -23,8 +23,6 @@
 
 <!-- Dashboard -->
 <div id="dashboard">
-
-
 	<!-- Content
 	================================================== -->
 	<div class="dashboard-content">
@@ -34,63 +32,77 @@
 			<div class="col-lg-12 col-md-12">
 
 				<div class="dashboard-list-box margin-top-0">
-					<h4>Please Review Details Before Submitting</h4>
-	<form action="{% url 'resumeapp:Update' %}" method="post" onsubmit="return Change();" >
-		<!--input type='hidden' name="id" value="{{ resume.id }}" /--> {% csrf_token %}
+					<h4>Please Review Details Before Submitting </h4>
+				<form action="{% url 'resumeapp:Update' %}" method="post" onsubmit="return Change();" >
+		<!--input type='hidden' name="id" value="" /--> {% csrf_token %}
 	<div class="dashboard-list-box-content">
 
 		<div class="submit-page">
 
 			<!-- Email -->
 			<div class="form">
-				<h5>First Name:</h5>
-				<input class="search-field" type="text" id="fName"  name="fName" value="{{ resume.first_name }}" required />
+				<h5>First Name: </h5>
+				{{ candidate.first_name }}
+				<!--input class="search-field" type="text" id="fName"  name="fName" value="" required /-->
+				{{ candidate.first_name.errors }}
 			</div>
 			<div class="form">
 				<h5>Last Name:</h5>
-				<input class="search-field" type="text" id="lName" name="lName" value="{{ resume.last_name }}" required />
+				{{ candidate.last_name }}
+				<!--input class="search-field" type="text" id="lName" name="lName" value="" required /-->
+				{{ candidate.last_name.errors }}
 			</div>
 
 			<!-- Email -->
 			<div class="form">
 				<h5>Contact Details:</h5>
-				<input class="search-field" type="text" name="cDetail" id="cDetail"  value="{{ resume.phone_number }}" required />
+				{{ candidate_Details.phone_number }}
+				<!--input class="search-field" type="text" name="cDetail" id="cDetail"  value="" required /-->
+				{{ candidate_Details.phone_number.errors }}
 			</div>
 			<!-- Email -->
 			<div class="form">
 				<h5>Email ID:</h5>
-				<input class="search-field" type="text"  name="email" id="email"  value="{{ resume.email_address }}" required  />
+				{{ candidate_Details.email_address }}
+				<!--input class="search-field" type="text"  name="email" id="email"  value="" required  /-->
+				{{ candidate_Details.email_address.errors }}
 			</div>
 			<!-- Title -->
 			<div class="form">
 				<h5>Education:</h5>
-				<input class="search-field" type="text" name="edu" id="edu" value="{{ resume.education }}"   />
+				{{ candidate_Details.education }}
+				<!--input class="search-field" type="text" name="edu" id="edu" value=""   /-->
+				{{ candidate_Details.education.errors }}
 			</div>
 
 			<!-- Location -->
 			<div class="form">
 				<h5>Work Experience:</h5>
-				<input class="search-field" type="text" name="exp" id="exp" value="{{ resume.workexperience }}"  />
+				{{ candidate_Details.work_experience }}
+				<!--input class="search-field" type="text" name="exp" id="exp" value=""  /-->
+				{{ candidate_Details.work_experience.errors }}
 			</div>
 			<!-- Location -->
 			<div class="form">
-				<h5>Visa Status:</h5>
-				<select id="vStatus" style="width:145px" name="vStatus">
-					<option value="H1 B" {% if resume.visaStatus ==  "H1 B" %} selected="true" {% endif %}>H1 B</option>
-					<option value="H4" {% if resume.visaStatus == "H4" %} selected="true" {% endif %}>H4</option>
-					<option value="H4 EAD" {% if resume.visaStatus == "H4 EAD" %} selected="true" {% endif %}>H4 EAD</option>
-					<option value="B1" {% if resume.visaStatus == "B1" %} selected="true" {% endif %}>B1</option>
-					<option value="L1" {% if resume.visaStatus == "L1" %} selected="true" {% endif %}>L1</option>
-					<option value="L2" {% if resume.visaStatus == "L2" %} selected="true" {% endif %}>L2</option>
-					<option value="F1" {% if resume.visaStatus == "F1" %} selected="true" {% endif %}>F1</option>
-				</select>
+				<h5>Visa Status:</h5> {{ candidate_Details.employment_authorization }}
+				<!--select id="vStatus" style="width:145px" name="vStatus">
+					<option value="H1 B" {% if candidate_Details.employment_authorization ==  "H1 B" %} selected="true" {% endif %}>H1 B</option>
+					<option value="H4" {% if candidate_Details.employment_authorization == "H4" %} selected="true" {% endif %}>H4</option>
+					<option value="H4 EAD" {% if candidate_Details.employment_authorization == "H4 EAD" %} selected="true" {% endif %}>H4 EAD</option>
+					<option value="B1" {% if candidate_Details.employment_authorization == "B1" %} selected="true" {% endif %}>B1</option>
+					<option value="L1" {% if candidate_Details.employment_authorization == "L1" %} selected="true" {% endif %}>L1</option>
+					<option value="L2" {% if candidate_Details.employment_authorization == "L2" %} selected="true" {% endif %}>L2</option>
+					<option value="F1" {% if candidate_Details.employment_authorization == "F1" %} selected="true" {% endif %}>F1</option>
+				</select-->
 			</div>
 <div class="form"> </div>
 
 			<!-- Description -->
 			<div class="form" style="width: 100%;">
 				<h5>Technologies:</h5>
-				<input type="text"  name="skills" id="skills" value="{{ resume.technical_skillset }}" style="height:100px"/>
+				{{ candidate_Details.technical_skillset }}
+				<!--input type="text"  name="skills" id="skills" value="" style="height:100px"/-->
+				{{ candidate_Details.technical_skillset.errors }}
 			</div>
 
 			<div class="form" style="width: 100%;">
@@ -119,10 +131,10 @@
 <script>
 function jsvalidate() {
 
-var Lname = document.getElementById("lName").value;
-var Fname = document.getElementById("fName").value;
-var Email = document.getElementById("email").value;
-var Phone = document.getElementById("cDetail").value;
+var Lname = document.getElementById("id_last_name").value;
+var Fname = document.getElementById("id_first_name").value;
+var Email = document.getElementById("id_email_address").value;
+var Phone = document.getElementById("id_phone_number").value;
 
 if ( ( typeof(Lname) == "undefined" || ( ! Lname )) )
 {

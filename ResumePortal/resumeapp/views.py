@@ -17,8 +17,8 @@ import docx
 import os
 from docx import Document
 import json
-from .models import Resume,Job_Details
-from .forms import UploadForm
+from .models import Candidate, Candidate_Details , Job_Details
+from .forms import UploadForm,CandidateForm,Candidate_DetailsForm
 
 import email, smtplib, ssl
 from email import encoders
@@ -88,19 +88,28 @@ def applicant_file(request):
             parsed_details = ResumeParser(latest_file).get_extracted_data()
             resume_dict =  parsed_details
 
-            resume = Resume()
-            resume = Resume(first_name=resume_dict.get("name"),
-                        last_name=resume_dict.get("name"),
-                        phone_number=resume_dict.get("mobile_number"),
-                        #loginid=resume_dict.get("email"),
-                        email_address=resume_dict.get("email"),
-                        #password=resume_dict.get("mobile_number"),
-                        work_experience=resume_dict.get("Work Experience"),
-                        technical_skillset=resume_dict.get("skills"),
-                        education = resume_dict.get("degree"))
+            candidateForm = CandidateForm()
+            # ContactForm(initial={'subject': 'Hi there!'})
+            candidateForm = CandidateForm(
+                                       initial={ 'first_name': resume_dict.get("name"),
+                                                 'last_name': resume_dict.get("name")
+                                                }
+                                 )
 
+            candidate_DetailsForm = Candidate_DetailsForm()
+            print (resume_dict)
+            candidate_DetailsForm  = Candidate_DetailsForm( initial={
+                                                    'phone_number': resume_dict.get("mobile_number"),
+                                                    'email_address': resume_dict.get("email"),
+                                                    'work_experience': resume_dict.get("experience"),
+                                                    'technical_skillset': resume_dict.get("skills"),
+                                                    'education': resume_dict.get("degree")
+                                                      }
+                                                    )
+            # print(candidate_DetailsForm)
             # resume.save() // jira 81 error
-            context = {'resume': resume}
+            context = {'candidate': candidateForm , 'candidate_Details': candidate_DetailsForm }
+
             return render(request, 'resumeapp/Applicants_Detail.html', context)
         else:
             print("form is not valid")
@@ -112,40 +121,49 @@ def applicant_file(request):
 #Getparsed Details from second page and store in DB
 def update_db(request):
     if request.method == 'POST':
-          password_temp = sha256_crypt.encrypt(request.POST['cDetail'])
-          update_resume = Resume(       #id = request.POST['id'], // jira 81 error
-                       first_name = request.POST['fName'],
-                       last_name = request.POST['lName'],
-                       phone_number = request.POST['cDetail'],
-                       education = request.POST['edu'],
-                       loginid = request.POST['email'],
-                       email_address = request.POST['email'],
-                       password = password_temp ,
-                       work_experience = request.POST['exp'],
-                       employment_authorization = request.POST['vStatus'],
-                       technical_skillset = request.POST['skills']
-                       )
+          Fcandidate_Details = Candidate_DetailsForm(request.POST)
+          Fcandidate = CandidateForm(request.POST)
 
-          update_resume.save()
+          if Fcandidate.is_valid() and Fcandidate_Details.is_valid() :
+              password_temp = sha256_crypt.encrypt( Fcandidate_Details.cleaned_data['phone_number'])
+              update_Candidate = Candidate(
+                                     first_name= Fcandidate.cleaned_data['first_name'],
+                                     last_name= Fcandidate.cleaned_data['last_name'],
+                                     loginid= Fcandidate_Details.cleaned_data['email_address'],
+                                     password= password_temp
+                                       )
+              update_Candidate.save()
+              update_Candidate_Details = Candidate_Details(
+                                     candidate  = update_Candidate,
+                                     phone_number= Fcandidate_Details.cleaned_data['phone_number'],
+                                     education= Fcandidate_Details.cleaned_data['education'],
+                                     email_address= Fcandidate_Details.cleaned_data['email_address'],
+                                     work_experience= Fcandidate_Details.cleaned_data['work_experience'],
+                                     employment_authorization= Fcandidate_Details.cleaned_data['employment_authorization'],
+                                     technical_skillset= Fcandidate_Details.cleaned_data['technical_skillset']
+                                     )
 
-          # -----------------------Email--------------------------------
+              update_Candidate_Details.save()
+            # -----------------------Email--------------------------------
 
-          token = gen_token(update_resume)
-          current_site = get_current_site(request)
-          message = render_to_string('resumeapp/mail_body.txt', {
-              'user': update_resume.first_name,
+              token = gen_token(update_Candidate)
+              current_site = get_current_site(request)
+              message = render_to_string('resumeapp/mail_body.txt', {
+              'user': update_Candidate.first_name,
               'domain': current_site.domain,
-              'uid': urlsafe_base64_encode(force_bytes(update_resume.id)),
+              'uid': urlsafe_base64_encode(force_bytes(update_Candidate.id)),
               'token': urlsafe_base64_encode(force_bytes(token)),
-          })
-          email = EmailMessage('Please verify account', message, to=[update_resume.email_address])
-          email.send()
+                })
+              email = EmailMessage('Please verify account', message, to=[update_Candidate_Details.email_address])
+              email.send()
 
-          # -----------------------Email--------------------------------
+             # -----------------------Email--------------------------------
+              return render(request,'resumeapp/ThankYou.html')
+          else:
+              context = {'candidate': Fcandidate, 'candidate_Details': Fcandidate_Details}
+              return render(request, 'resumeapp/Applicants_Detail.html' , context )
 
 
-          return render(request,'resumeapp/ThankYou.html')
-    return render(request, 'resumeapp/Applicants_Detail.html')
 
 
 def user_login(request):
@@ -157,7 +175,7 @@ def update_password(request):
         if (request.session.has_key('uid')):
 
             email_check = request.POST['email']
-            login_exist = Resume.objects.filter(loginid=email_check)
+            login_exist = Candidate.objects.filter(loginid=email_check)
 
             if not login_exist:
 
@@ -165,7 +183,7 @@ def update_password(request):
                 print (len(newpass))
                 newencrypt = sha256_crypt.encrypt(str(newpass))
                 print (newencrypt)
-                resume = Resume.objects.filter(id=request.session['uid']).update(loginid=request.POST['email'],
+                resume = Candidate.objects.filter(id=request.session['uid']).update(loginid=request.POST['email'],
                                         password=newencrypt)
                 request.session['eid'] = request.POST['email']
                 return render(request,'resumeapp/JobSearch.html',{'udata':request.session['eid']})
@@ -179,14 +197,15 @@ def update_password(request):
         return render(request,'resumeapp/Homepage.html')
 
 def registered_user(request):
+
     if request.method == 'POST':
         user_email = request.POST['login']
         pass1 = request.POST['password']
-        email_exist = Resume.objects.filter(loginid = user_email,email_active_field = True)
+        email_exist = Candidate.objects.filter(loginid = user_email,email_active_field = True)
 
         if email_exist:
 
-            password_exist = Resume.objects.filter(loginid=user_email).values_list('password',flat=True)
+            password_exist = Candidate.objects.filter(loginid=user_email).values_list('password',flat=True)
             new_pass = list(password_exist)
             pass2 = (new_pass[0])
             password_check=sha256_crypt.verify(pass1,pass2)
@@ -212,7 +231,7 @@ def update_reset_password(request):
     if request.method == 'POST':
 
             email = request.POST['email']
-            if Resume.objects.filter(loginid=request.POST['email']).exists():
+            if Candidate.objects.filter(loginid=request.POST['email']).exists():
 
                 password1 = request.POST['pass1']
                 password2 = request.POST['pass2']
@@ -220,7 +239,7 @@ def update_reset_password(request):
 
                 if password1 == password2:
                     encrypt_pass = sha256_crypt.encrypt(str(password1))
-                    s = Resume.objects.filter(loginid=request.POST['email']).update(password=encrypt_pass)
+                    s = Candidate.objects.filter(loginid=request.POST['email']).update(password=encrypt_pass)
                     messages.success(request,"Your Password has been updated Successfully.",extra_tags='login')
                     print ("success")
                     return HttpResponseRedirect(reverse('resumeapp:Forgot_Password'))
@@ -567,16 +586,16 @@ def check_token(user, token):
     resultcomp = sha256_crypt.verify( generatedtokenstr ,  token )
     return  resultcomp
 
-def gen_token_str(update_resume):
+def gen_token_str(user):
 
-    strtoen = six.text_type(update_resume.pk) + six.text_type(update_resume.email_address) + six.text_type(
-        update_resume.email_active_field)
+    strtoen = six.text_type(user.pk) + six.text_type(user.loginid) + six.text_type(
+        user.email_active_field)
     return strtoen
 
-def gen_token(update_resume):
+def gen_token(user):
 
-    strtoen = six.text_type(update_resume.pk) + six.text_type(update_resume.email_address) + six.text_type(
-        update_resume.email_active_field)
+    strtoen = six.text_type(user.pk) + six.text_type(user.loginid) + six.text_type(
+        user.email_active_field)
 
     str1 = sha256_crypt.encrypt( strtoen )
     # str11 = urlsafe_base64_encode(str1)
@@ -587,7 +606,7 @@ def activate(request, uidb64, token):
     try:
         token_no64 = urlsafe_base64_decode(token).decode()
         uid =  urlsafe_base64_decode(uidb64).decode()
-        user = models.Resume.objects.get(pk=uid)
+        user = models.Candidate.objects.get(pk=uid)
     except(TypeError, ValueError, OverflowError, user.DoesNotExist):
         user = None
     if user is not None and check_token(user, token_no64):

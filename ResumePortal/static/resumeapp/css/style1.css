@@ -1868,12 +1868,12 @@ img.mfp-img {
 	color: #5f9025;
 }
 
-.notification.error,
-.notification.error a,
-.notification.error strong {
-	background-color: #ffe9e9;
-	color: #de5959;
-}
+	.notification.error, .errorlist
+	.notification.error a,
+	.notification.error strong {
+		background-color: #ffe9e9;
+		color: #de5959;
+	}
 
 .notification.warning,
 .notification.warning a,
