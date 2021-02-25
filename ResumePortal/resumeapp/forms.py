@@ -12,6 +12,17 @@ class UploadForm(forms.ModelForm):
          model = ResumeUpload
          fields = ('filename', )
 
+class UserLoginForm(forms.ModelForm):
+    loginid = forms.EmailField(
+        error_messages={'invalid': 'Email error msg.'},
+        widget=forms.TextInput(attrs={'class': 'input-text'}),
+        required=True)
+    password = forms.CharField(widget= forms.PasswordInput( attrs={'class': 'input-text'} ))
+
+    class Meta:
+        model = Candidate
+        fields = ( 'loginid',  'password' )
+
 class CandidateForm(forms.ModelForm):
     class Meta:
         model = Candidate

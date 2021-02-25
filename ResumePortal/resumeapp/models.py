@@ -55,7 +55,7 @@ class Resume(models.Model):
 class Candidate(models.Model):
     first_name = models.CharField(max_length=50 , null=False)
     last_name = models.CharField(max_length=50 , null=False)
-    loginid = models.EmailField(unique=True,null=False )
+    loginid = models.EmailField(null=False )
     password = models.CharField(max_length=100,null=False )
     #-----------------------Email--------------------------------
     email_active_field = models.BooleanField(default=False, null=False)

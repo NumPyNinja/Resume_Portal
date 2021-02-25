@@ -93,7 +93,9 @@
 						<label for="username">
 							Username:
 							<i class="ln ln-icon-Male"></i>
-							<input class="input-text" type="email" placeholder="Email" name="login" value="" id = "login"  />
+							{{ form.loginid }}
+							<!--input class="input-text" type="email" placeholder="Email" name="login" value="" id = "login"  /-->
+							{{ form.loginid.errors }}
 						</label>
 					</p>
 
@@ -101,7 +103,9 @@
 						<label for="password">
 							Password:
 							<i class="ln ln-icon-Lock-2"></i>
-							<input class="input-text" type="password" placeholder="Password" name="password" id = "password"/>
+							{{ form.password }}
+							<!--input class="input-text" type="password" placeholder="Password" name="password" id = "password"/-->
+							{{ form.password.errors}}
 						</label>
 					</p>
 
@@ -175,8 +179,8 @@
 
 function login1() {
 
-var username = document.getElementById("login").value;
-var password = document.getElementById("password").value;
+var username = document.getElementById("id_loginid").value;
+var password = document.getElementById("id_password").value;
 
 if  ( (typeof(username) == "undefined") || ( ! username )  ||  ( ! validateEmail( username ) )  )
 {

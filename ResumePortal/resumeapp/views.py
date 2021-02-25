@@ -18,7 +18,7 @@ import os
 from docx import Document
 import json
 from .models import Candidate, Candidate_Details , Job_Details
-from .forms import UploadForm,CandidateForm,Candidate_DetailsForm
+from .forms import UploadForm,CandidateForm,Candidate_DetailsForm,UserLoginForm
 
 import email, smtplib, ssl
 from email import encoders
@@ -55,8 +55,8 @@ def upload_page(request):
 
 #Open  the my account page
 def my_account(request):
-
-    return render(request, 'resumeapp/my_account.html')
+    userLoginForm = UserLoginForm()
+    return render(request, 'resumeapp/my_account.html' , {'form': userLoginForm  } )
 
 #Open job search page
 def job_search(request):
@@ -167,8 +167,8 @@ def update_db(request):
 
 
 def user_login(request):
-
-    return render(request,'resumeapp/my_account.html')
+    userLoginForm = UserLoginForm()
+    return render( request,'resumeapp/my_account.html' , {'form': userLoginForm  } )
 
 def update_password(request):
     if request.method == 'POST':
@@ -199,26 +199,29 @@ def update_password(request):
 def registered_user(request):
 
     if request.method == 'POST':
-        user_email = request.POST['login']
-        pass1 = request.POST['password']
-        email_exist = Candidate.objects.filter(loginid = user_email,email_active_field = True)
+        userLoginForm = UserLoginForm(request.POST)
 
-        if email_exist:
+        if userLoginForm.is_valid():
+            user_email = userLoginForm.cleaned_data['loginid']
+            pass1 = userLoginForm.cleaned_data['password']
+            email_exist = Candidate.objects.filter(loginid = user_email,email_active_field = True)
 
-            password_exist = Candidate.objects.filter(loginid=user_email).values_list('password',flat=True)
-            new_pass = list(password_exist)
-            pass2 = (new_pass[0])
-            password_check=sha256_crypt.verify(pass1,pass2)
+            if email_exist:
 
-            if email_exist and password_check:
-                request.session['eid'] = user_email
-                return render(request,'resumeapp/Job_Search_Results.html',{'udata': request.session['eid']})
+                password_exist = Candidate.objects.filter(loginid=user_email).values_list('password',flat=True)
+                new_pass = list(password_exist)
+                pass2 = (new_pass[0])
+                password_check=sha256_crypt.verify(pass1,pass2)
+
+                if email_exist and password_check:
+                    request.session['eid'] = user_email
+                    return render(request,'resumeapp/Job_Search_Results.html',{'udata': request.session['eid']})
+                else:
+                    messages.error(request,"Please Use valid Credentials..Incorrect Password",extra_tags='login')
+                    return HttpResponseRedirect(reverse('resumeapp:my_account'))
             else:
-                messages.error(request,"Please Use valid Credentials..Incorrect Password",extra_tags='login')
+                messages.info(request,"Please use registered Email to login",extra_tags='register')
                 return HttpResponseRedirect(reverse('resumeapp:my_account'))
-        else:
-            messages.info(request,"Please use registered Email to login",extra_tags='register')
-            return HttpResponseRedirect(reverse('resumeapp:my_account'))
 
     return HttpResponseRedirect(reverse('resumeapp:my_account'))
 
